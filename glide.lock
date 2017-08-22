@@ -1,6 +1,8 @@
-hash: 40e013c52af0d5fa5997ef33c3bde64d36e55ef6652c1f955578d8476e203951
-updated: 2017-08-21T23:32:20.055758921+03:00
+hash: 999e49cda7a97023eb02483aace6afca77aaffa59d5a868fe4d8fe768d80630b
+updated: 2017-08-22T21:27:07.578801624+03:00
 imports:
+- name: github.com/andboson/skypeapi
+  version: 6a59fd8b836ce414225b6a6a030d2465ed60fa8c
 - name: github.com/andrewstuart/goq
   version: 0a7802fa59a73faa6613d9380b8aa505c27022d8
 - name: github.com/andybalholm/cascadia

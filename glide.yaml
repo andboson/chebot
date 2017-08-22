@@ -9,3 +9,4 @@ import:
 - package: gopkg.in/telegram-bot-api.v4
 - package: github.com/technoweenie/multipartstreamer
 - package: github.com/michivip/skypeapi
+- package: github.com/andboson/skypeapi

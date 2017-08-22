@@ -1,14 +1,14 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/andboson/chebot/models"
+	"github.com/andboson/skypeapi"
 	"github.com/labstack/echo"
 	"github.com/labstack/gommon/log"
-	"github.com/michivip/skypeapi"
 	"net/http"
 	"sync"
 	"time"
-	"fmt"
 )
 
 var SkypeToken skypeapi.TokenResponse
@@ -52,12 +52,31 @@ func SkypeHook(c echo.Context) error {
 
 func sendReplyMessage(activity *skypeapi.Activity, message, authorizationToken string) error {
 	responseActivity := &skypeapi.Activity{
-		Type:         activity.Type,
-		From:         activity.Recipient,
-		Conversation: activity.Conversation,
-		Recipient:    activity.From,
-		Text:         message,
-		ReplyToID:    activity.ID,
+		Type:             activity.Type,
+		AttachmentLayout: "list",
+		From:             activity.Recipient,
+		Conversation:     activity.Conversation,
+		Recipient:        activity.From,
+		Text:             message,
+		Attachments: []skypeapi.Attachment{
+			{
+				ContentType: "application/vnd.microsoft.card.hero",
+				Content: skypeapi.AttachmentContent{
+					Title: "Выберите кинотеатр",
+					Buttons: []skypeapi.CardAction{
+						{
+							Title: "Любава",
+							Value: "lyubava",
+						},
+						{
+							Title: "Днипроплаза",
+							Value: "plaza",
+						},
+					},
+				},
+			},
+		},
+		ReplyToID: activity.ID,
 	}
 	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities", activity.ServiceURL, activity.Conversation.ID)
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
