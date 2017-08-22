@@ -1,0 +1,11 @@
+package: github.com/andboson/chebot
+import:
+- package: github.com/labstack/echo
+  subpackages:
+  - middleware
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert
+- package: gopkg.in/telegram-bot-api.v4
+- package: github.com/technoweenie/multipartstreamer
+- package: github.com/michivip/skypeapi
