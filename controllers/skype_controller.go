@@ -52,27 +52,22 @@ func SkypeHook(c echo.Context) error {
 
 func sendReplyMessage(activity *skypeapi.Activity, message, authorizationToken string) error {
 	responseActivity := &skypeapi.Activity{
-		Type:             activity.Type,
-		AttachmentLayout: "list",
-		From:             activity.Recipient,
-		Conversation:     activity.Conversation,
-		Recipient:        activity.From,
-		Text:             message,
-		Attachments: []skypeapi.Attachment{
-			{
-				ContentType: "application/vnd.microsoft.card.hero",
-				Content: skypeapi.AttachmentContent{
-					Title: "Выберите кинотеатр",
-					Buttons: []skypeapi.CardAction{
-						{
-							Title: "Любава",
-							Value: "lyubava",
-						},
-						{
-							Title: "Днипроплаза",
-							Value: "plaza",
-						},
-					},
+		Type:         activity.Type,
+		From:         activity.Recipient,
+		Conversation: activity.Conversation,
+		Recipient:    activity.From,
+		InputHint:    "Выберите  место (lyubava\\plaza)",
+		SuggestedActions: skypeapi.SuggestedActions{
+			Actions: []skypeapi.CardAction{
+				{
+					Title: "Любава",
+					Type:  "imBack",
+					Value: "lyubava",
+				},
+				{
+					Title: "Днепроплаза",
+					Type:  "imBack",
+					Value: "plaza",
 				},
 			},
 		},
