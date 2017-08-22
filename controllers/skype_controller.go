@@ -47,6 +47,8 @@ func SkypeHook(c echo.Context) error {
 		"status": "success",
 	}
 
+	log.Printf("user --", req.From.Name, req.From.ID)
+
 	return c.JSON(http.StatusOK, resp)
 }
 
@@ -56,7 +58,8 @@ func sendReplyMessage(activity *skypeapi.Activity, message, authorizationToken s
 		From:         activity.Recipient,
 		Conversation: activity.Conversation,
 		Recipient:    activity.From,
-		InputHint:    "Выберите  место (lyubava\\plaza)",
+		Text:         "Выберите  кинотеатр (lyubava\\plaza)",
+		InputHint:    "место (lyubava\\plaza)",
 		SuggestedActions: skypeapi.SuggestedActions{
 			Actions: []skypeapi.CardAction{
 				{
