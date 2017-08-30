@@ -8,6 +8,7 @@ import (
 )
 
 func TelegramMessagesHandler() {
+	defer recover()
 	bot, err := tgbotapi.NewBotAPI(models.Conf.TelegramToken)
 
 	if err != nil {

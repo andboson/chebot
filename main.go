@@ -4,6 +4,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/andboson/chebot/routes"
 	"github.com/andboson/chebot/controllers"
+	"github.com/andboson/chebot/repositories"
 )
 
 func main() {
@@ -14,7 +15,7 @@ func main() {
 	//}))
 	e.Use(middleware.Recover())
 	go controllers.TelegramMessagesHandler()
+	repositories.InitSkype()
 
-	controllers.InitSkype()
 	e.Logger.Fatal(e.Start(":1323"))
 }

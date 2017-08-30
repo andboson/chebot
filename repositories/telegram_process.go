@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -19,14 +21,16 @@ var KinoNamesRu = map[string]string{
 }
 
 var TeleMsgIn map[int]chan tgbotapi.Update
+var TeleLastMsgID map[int]int
 var TeleUserMessagesFuncStop map[int]chan bool
 var TeleBot *tgbotapi.BotAPI
+var mu sync.Mutex
 
 func init() {
-	var mu sync.Mutex
 	mu.Lock()
 	defer mu.Unlock()
 	TeleMsgIn = make(map[int]chan tgbotapi.Update)
+	TeleLastMsgID = make(map[int]int)
 	TeleUserMessagesFuncStop = make(map[int]chan bool)
 }
 
@@ -70,7 +74,7 @@ func UserMessagesFunc(id int) {
 	for {
 		select {
 		case update := <-TeleMsgIn[id]:
-			context = processUserMessage(update, context)
+			context = processUserMessage(update, context, id)
 			forgetContext = time.After(DEFAULT_CONTEXT_LIFETIME * time.Second)
 		case stop := <-TeleUserMessagesFuncStop[id]:
 			if stop {
@@ -89,7 +93,7 @@ func GoodbyeMsg(chatId int64) {
 	TeleBot.Send(msg)
 }
 
-func processUserMessage(update tgbotapi.Update, ctx string) string {
+func processUserMessage(update tgbotapi.Update, ctx string, uid int) string {
 	var chatId int64
 	var reply, text string
 	var messageId int
@@ -110,8 +114,8 @@ func processUserMessage(update tgbotapi.Update, ctx string) string {
 	if text != "" && ctx != "" {
 		switch ctx {
 		case CONTEXT_KINO:
-			processKinoRequest(text, ctx, chatId, messageId)
-
+			msgId := processKinoRequest(text, ctx, chatId, messageId, uid)
+			TeleLastMsgID[uid] = msgId
 		}
 		return ctx
 	}
@@ -119,7 +123,7 @@ func processUserMessage(update tgbotapi.Update, ctx string) string {
 	msg := tgbotapi.NewMessage(chatId, "")
 
 	// catch /kino command
-	if (text == "/kino" || text == "/films" ) && ctx != CONTEXT_KINO {
+	if (text == "/kino" || text == "/films") && ctx != CONTEXT_KINO {
 		reply = "Выберите кинотеатр"
 
 		butt := tgbotapi.NewInlineKeyboardRow(
@@ -129,6 +133,7 @@ func processUserMessage(update tgbotapi.Update, ctx string) string {
 		keyb := tgbotapi.NewInlineKeyboardMarkup(butt)
 		msg.ReplyMarkup = &keyb
 		ctx = CONTEXT_KINO
+		TeleLastMsgID[uid] = 0
 	}
 
 	// new user
@@ -147,28 +152,65 @@ func processUserMessage(update tgbotapi.Update, ctx string) string {
 	return ctx
 }
 
-func processKinoRequest(location string, ctx string, chatId int64, messageId int) {
+func processKinoRequest(location string, ctx string, chatId int64, messageId, uid int) int {
+	var num int
+	var sentId int
+
+	dataParts := strings.Split(location, "|")
+	if len(dataParts) > 1 {
+		location = dataParts[0]
+		num, _ = strconv.Atoi(dataParts[1])
+	}
+
 	name, ok := KinoNamesRu[location]
 	if !ok {
-		log.Printf("unknown loction: %s", location)
-		return
+		log.Printf("unknown location: %s", location)
+		return sentId
 	}
 
-	msg := tgbotapi.NewMessage(chatId, "Фильмы в кинотеатре в "+name+":")
-	TeleBot.Send(msg)
+	if len(dataParts) == 1 {
+		TeleLastMsgID[uid] = 0
+		msgWhere := tgbotapi.NewMessage(chatId, "Фильмы в кинотеатре в "+name+":")
+		TeleBot.Send(msgWhere)
+	}
 
 	films := GetMovies(location)
-	msg = tgbotapi.NewMessage(chatId, "")
-	msgPhoto := tgbotapi.NewPhotoShare(chatId, "")
-	for _, film := range films {
-		msg.Text = fmt.Sprintf("*%s*",film.Title) //URL_PREFIX + "/" + film.Link)
-		msg.ParseMode = tgbotapi.ModeMarkdown
-		TeleBot.Send(msg)
 
-		msgPhoto = tgbotapi.NewPhotoShare(chatId, URL_PREFIX+film.Img)
-		msgPhoto.Caption = film.TimeBlock
-		TeleBot.Send(msgPhoto)
+	butt := tgbotapi.NewInlineKeyboardRow()
+	for idx, _ := range films {
+		var data = fmt.Sprintf("%s|%d", location, idx)
+		var selected string
+		if idx == num {
+			selected = " *"
+		}
+		var text = strconv.Itoa(idx) + selected
+		btn := tgbotapi.NewInlineKeyboardButtonData(text, data)
+		butt = append(butt, btn)
 	}
 
-	return
+	// send film
+	keyb := tgbotapi.NewInlineKeyboardMarkup(butt)
+	film := films[num]
+
+	lastMsg, ok := TeleLastMsgID[uid]
+	if ok && lastMsg != 0 {
+		msgEdit := tgbotapi.NewEditMessageText(chatId, lastMsg,"")
+		msgEdit.Text = fmt.Sprintf("*%s*\n %s [:](%s)", film.Title, film.TimeBlock, URL_PREFIX+"/"+film.Img)
+		msgEdit.ParseMode = tgbotapi.ModeMarkdown
+		msgEdit.ReplyMarkup = &keyb
+		TeleBot.Send(msgEdit)
+		sentId = TeleLastMsgID[uid]
+
+	} else {
+		msg := tgbotapi.NewMessage(chatId, "")
+
+		msg.Text = fmt.Sprintf("*%s*\n %s [:](%s)", film.Title, film.TimeBlock, URL_PREFIX+"/"+film.Img)
+		msg.ParseMode = tgbotapi.ModeMarkdown
+		msg.ReplyMarkup = &keyb
+
+		msgSent, _ := TeleBot.Send(msg)
+		sentId = msgSent.MessageID
+	}
+
+	return sentId
 }
