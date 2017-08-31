@@ -71,7 +71,7 @@ func detectPlatform(activity skypeapi.Activity) string {
 	var platform = "web"
 	if len(activity.Entities) > 0 {
 		entity, ok := activity.Entities[0].(map[string]string)
-		log.Printf("[debug] error messaging: %+v", entity)
+		log.Printf("[debug0] error messaging: %+v ------- %+v", entity, activity.Entities, ok)
 
 		if ok {
 			platformRaw, ok := entity["platform"]
@@ -81,7 +81,6 @@ func detectPlatform(activity skypeapi.Activity) string {
 		}
 	}
 	log.Printf("[debug] error messaging: %s", platform)
-
 
 	return platform
 }
@@ -175,8 +174,6 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
 
-
-
 func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationToken string) error {
 	responseActivity := &skypeapi.Activity{
 		Type:             activity.Type,
@@ -189,11 +186,11 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 			{
 				ContentType: "application/vnd.microsoft.card.hero",
 				Content: skypeapi.AttachmentContent{
-					Title:   "111",
-					Text: "33",
+					Title: "111",
+					Text:  "33",
 					Images: []skypeapi.CardImage{
 						{
-						URL: "http://aka.ms/Fo983c",
+							URL: "http://aka.ms/Fo983c",
 						},
 					},
 				},
