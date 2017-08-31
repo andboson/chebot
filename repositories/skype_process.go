@@ -41,16 +41,40 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 	id = message.From.ID
 	ctx, _ := userContexts[id]
 
+	if ctx != "" {
+
+		switch ctx {
+		case "kino":
+			sendFilmsReplyMessage(&message, text)
+			setUserContext(id, "")
+		}
+
+		return
+	}
+
+
 	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "films") {
 		setUserContext(id, "kino")
-		err := sendReplyMessage(&message, "Выберите  кинотеатр (lyubava\\plaza)", SkypeToken.AccessToken)
+		err := sendChoicePlaceReplyMessage(&message, "Выберите  кинотеатр (lyubava\\plaza)", SkypeToken.AccessToken)
 		if err != nil {
 			log.Printf("[skype] error messaging: %s", err)
 		}
 	}
 }
+func sendFilmsReplyMessage(activity *skypeapi.Activity, i string) {
+	log.Printf("activity: %s  ----- %+v", activity.Action, activity)
+
+
+}
 
 func setUserContext(id string, ctx string) {
+	// clear context
+	if ctx == "" {
+		userContexts[id] = ""
+		return
+	}
+
+	// check and hold
 	_, ok := userContexts[id]
 	if !ok {
 		userContexts[id] = ctx
@@ -78,7 +102,7 @@ func holdUserContext(id string) {
 	}
 }
 
-func sendReplyMessage(activity *skypeapi.Activity, message, authorizationToken string) error {
+func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authorizationToken string) error {
 	responseActivity := &skypeapi.Activity{
 		Type:         activity.Type,
 		From:         activity.Recipient,

@@ -17,7 +17,7 @@ const (
 
 var KinoNamesRu = map[string]string{
 	"lyubava": "Любаве",
-	"plaza":   "Днипроплазе",
+	"plaza":   "Днепроплазе",
 }
 
 var TeleMsgIn map[int]chan tgbotapi.Update
