@@ -2,19 +2,18 @@ package repositories
 
 import (
 	"fmt"
-	"github.com/andboson/skypeapi"
-	"time"
-	"log"
 	"github.com/andboson/chebot/models"
+	"github.com/andboson/skypeapi"
+	"log"
 	"strings"
+	"time"
 )
 
 var userContextsUpdated map[string]chan bool
 var userContexts map[string]string
 var SkypeToken skypeapi.TokenResponse
 
-
-func init()  {
+func init() {
 	mu.Lock()
 	mu.Unlock()
 	userContexts = make(map[string]string)
@@ -34,7 +33,7 @@ func InitSkype() {
 	time.AfterFunc(time.Duration(token.ExpiresIn)*time.Second, InitSkype)
 }
 
-func ProcessSkypeMessage(message skypeapi.Activity){
+func ProcessSkypeMessage(message skypeapi.Activity) {
 	var id string
 	var text string
 
@@ -42,8 +41,8 @@ func ProcessSkypeMessage(message skypeapi.Activity){
 	id = message.From.ID
 	ctx, _ := userContexts[id]
 
-	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "films" ) {
-		go setUserContext(id, "kino")
+	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "films") {
+		setUserContext(id, "kino")
 		err := sendReplyMessage(&message, "Выберите  кинотеатр (lyubava\\plaza)", SkypeToken.AccessToken)
 		if err != nil {
 			log.Printf("[skype] error messaging: %s", err)
@@ -51,18 +50,18 @@ func ProcessSkypeMessage(message skypeapi.Activity){
 	}
 }
 
-func setUserContext(id string, ctx string)  {
+func setUserContext(id string, ctx string) {
 	_, ok := userContexts[id]
 	if !ok {
 		userContexts[id] = ctx
-		holdUserContext(id)
+		go holdUserContext(id)
 		return
 	}
 
 	userContextsUpdated[id] <- true
 }
 
-func holdUserContext(id string){
+func holdUserContext(id string) {
 	defer func() {
 		delete(userContexts, id)
 	}()
@@ -78,8 +77,6 @@ func holdUserContext(id string){
 		}
 	}
 }
-
-
 
 func sendReplyMessage(activity *skypeapi.Activity, message, authorizationToken string) error {
 	responseActivity := &skypeapi.Activity{
