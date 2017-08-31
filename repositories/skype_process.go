@@ -70,13 +70,13 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 func detectPlatform(activity skypeapi.Activity) string {
 	var platform = "web"
 	if len(activity.Entities) > 0 {
-		entity, ok := activity.Entities[0].(map[string]string)
-		log.Printf("[debug0] error messaging: %+v ------- %+v", entity, activity.Entities, ok)
+		entity, ok := activity.Entities[0].(map[string]interface{})
+		log.Printf("[debug0] error messaging: %+v ------- %+v", entity, activity.Entities[0], ok)
 
 		if ok {
 			platformRaw, ok := entity["platform"]
 			if ok {
-				platform = strings.ToLower(platformRaw)
+				platform = strings.ToLower(platformRaw.(string))
 			}
 		}
 	}
