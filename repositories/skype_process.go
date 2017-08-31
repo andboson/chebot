@@ -36,6 +36,8 @@ func InitSkype() {
 func ProcessSkypeMessage(message skypeapi.Activity) {
 	var id string
 	var text string
+	var platform string
+	platform = detectPlatform(message)
 
 	text = message.Text
 	id = message.From.ID
@@ -45,26 +47,61 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 
 		switch ctx {
 		case "kino":
-			sendFilmsReplyMessage(&message, text)
+			sendFilmsReplyMessage(&message, text, platform)
 			setUserContext(id, "")
 		}
 
 		return
 	}
 
-
 	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "films") {
 		setUserContext(id, "kino")
-		err := sendChoicePlaceReplyMessage(&message, "Выберите  кинотеатр (lyubava\\plaza)", SkypeToken.AccessToken)
+		var prompt = " (lyubava\\plaza)"
+		if platform != "web" {
+			prompt = ""
+		}
+		err := sendChoicePlaceReplyMessage(&message, "Выберите  кинотеатр"+prompt, SkypeToken.AccessToken)
 		if err != nil {
 			log.Printf("[skype] error messaging: %s", err)
 		}
 	}
 }
-func sendFilmsReplyMessage(activity *skypeapi.Activity, i string) {
+
+func detectPlatform(activity skypeapi.Activity) string {
+	var platform = "web"
+	if len(activity.Entities) > 0 {
+		entity, ok := activity.Entities[0].(map[string]string)
+		if ok {
+			platformRaw, ok := entity["platform"]
+			if ok {
+				platform = strings.ToLower(platformRaw)
+			}
+		}
+	}
+
+	return platform
+}
+
+func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform string) {
 	log.Printf("activity: %s  ----- %+v", activity.Action, activity)
+	name, ok := KinoNamesRu[location]
+	if !ok {
+		skypeapi.SendReplyMessage(activity, "Не знаю такое место", SkypeToken.AccessToken)
+		log.Printf("unknown location: %s", location)
+		return
+	}
+	skypeapi.SendReplyMessage(activity, "Фильмы в "+name, SkypeToken.AccessToken)
+	films := GetMovies(location)
 
-
+	var text string
+	for _, film := range films {
+		var filmText = "---"
+		filmText += fmt.Sprintf("**%s**\n", film.Title)
+		filmText += fmt.Sprintf("`%s`\n", film.TimeBlock)
+		filmText += fmt.Sprintf("[film img](%s)", URL_PREFIX+"/"+film.Img)
+		text += filmText
+	}
+	skypeapi.SendReplyMessage(activity, text, SkypeToken.AccessToken)
 }
 
 func setUserContext(id string, ctx string) {
@@ -127,5 +164,6 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 		ReplyToID: activity.ID,
 	}
 	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities", activity.ServiceURL, activity.Conversation.ID)
+
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
