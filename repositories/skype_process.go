@@ -93,15 +93,18 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 	skypeapi.SendReplyMessage(activity, "Фильмы в "+name, SkypeToken.AccessToken)
 	films := GetMovies(location)
 
-	var text string
-	for _, film := range films {
-		var filmText = " \n "
-		filmText += fmt.Sprintf("\r\n **%s** ", film.Title)
-		filmText += fmt.Sprintf("\n `%s`", film.TimeBlock)
-		filmText += fmt.Sprintf("[:](%s)", URL_PREFIX+"/"+film.Img)
-		text += filmText
-		skypeapi.SendReplyMessage(activity, filmText, SkypeToken.AccessToken)
+	if platform == "web" {
+		for _, film := range films {
+			var filmText = " \n "
+			filmText += fmt.Sprintf("\r\n **%s** ", film.Title)
+			filmText += fmt.Sprintf("\r\n %s", film.TimeBlock)
+			filmText += fmt.Sprintf("[:](%s)", URL_PREFIX+"/"+film.Img)
+			skypeapi.SendReplyMessage(activity, filmText, SkypeToken.AccessToken)
+		}
+	} else {
+		sendReplyMessageRich(activity, "00000", SkypeToken.AccessToken)
 	}
+
 }
 
 func setUserContext(id string, ctx string) {
@@ -165,5 +168,35 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 	}
 	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities", activity.ServiceURL, activity.Conversation.ID)
 
+	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
+}
+
+
+
+func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationToken string) error {
+	responseActivity := &skypeapi.Activity{
+		Type:             activity.Type,
+		AttachmentLayout: "carousel",
+		From:             activity.Recipient,
+		Conversation:     activity.Conversation,
+		Recipient:        activity.From,
+		Text:             message,
+		Attachments: []skypeapi.Attachment{
+			{
+				ContentType: "application/vnd.microsoft.card.hero",
+				Content: skypeapi.AttachmentContent{
+					Title:   "111",
+					Text: "33",
+					Images: []skypeapi.CardImage{
+						{
+						URL: "http://aka.ms/Fo983c",
+						},
+					},
+				},
+			},
+		},
+		ReplyToID: activity.ID,
+	}
+	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities", activity.ServiceURL, activity.Conversation.ID)
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
