@@ -71,6 +71,8 @@ func detectPlatform(activity skypeapi.Activity) string {
 	var platform = "web"
 	if len(activity.Entities) > 0 {
 		entity, ok := activity.Entities[0].(map[string]string)
+		log.Printf("[debug] error messaging: %+v", entity)
+
 		if ok {
 			platformRaw, ok := entity["platform"]
 			if ok {
@@ -78,6 +80,8 @@ func detectPlatform(activity skypeapi.Activity) string {
 			}
 		}
 	}
+	log.Printf("[debug] error messaging: %s", platform)
+
 
 	return platform
 }
