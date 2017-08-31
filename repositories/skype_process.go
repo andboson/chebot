@@ -6,6 +6,7 @@ import (
 	"time"
 	"log"
 	"github.com/andboson/chebot/models"
+	"strings"
 )
 
 var userContextsUpdated map[string]chan bool
@@ -41,8 +42,8 @@ func ProcessSkypeMessage(message skypeapi.Activity){
 	id = message.From.ID
 	ctx, _ := userContexts[id]
 
-	if ctx == "" && (text == "kino" || text == "films" ) {
-		setUserContext(id, "kino")
+	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "films" ) {
+		go setUserContext(id, "kino")
 		err := sendReplyMessage(&message, "Выберите  кинотеатр (lyubava\\plaza)", SkypeToken.AccessToken)
 		if err != nil {
 			log.Printf("[skype] error messaging: %s", err)
