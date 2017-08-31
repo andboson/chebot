@@ -95,10 +95,10 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 
 	var text string
 	for _, film := range films {
-		var filmText = "---"
-		filmText += fmt.Sprintf("**%s**\n", film.Title)
-		filmText += fmt.Sprintf("`%s`\n", film.TimeBlock)
-		filmText += fmt.Sprintf("[film img](%s)", URL_PREFIX+"/"+film.Img)
+		var filmText = "\n --- "
+		filmText += fmt.Sprintf("**%s**", film.Title)
+		filmText += fmt.Sprintf("\n `%s` ", film.TimeBlock)
+		filmText += fmt.Sprintf("\n ![film img](%s)", URL_PREFIX+"/"+film.Img)
 		text += filmText
 	}
 	skypeapi.SendReplyMessage(activity, text, SkypeToken.AccessToken)
