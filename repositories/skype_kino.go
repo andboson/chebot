@@ -23,6 +23,7 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 			filmText += fmt.Sprintf("\r\n %s", film.TimeBlock)
 			filmText += fmt.Sprintf("[:](%s)", URL_PREFIX+"/"+film.Img)
 			skypeapi.SendReplyMessage(activity, filmText, SkypeToken.AccessToken)
+			log.Printf("[debug skype] send web resp")
 		}
 	} else {
 		sendReplyMessageRich(activity, "Фильмы в "+name, SkypeToken.AccessToken, films)
