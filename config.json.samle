@@ -1,4 +1,6 @@
 {
   "incoming_google_token": "",
-  "telegram_token": ""
+  "telegram_token": "",
+  "skype_pass":"",
+  "skype_id":""
 }
