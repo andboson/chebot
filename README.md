@@ -15,4 +15,5 @@ Cherkassy, UA city bot. For skype, telegram, api.ai exercises
 
 ### tools
 
-echo framework
+* Echo framework
+* glide vendoring tool

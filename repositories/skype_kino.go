@@ -89,7 +89,7 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 		Attachments:      attchmts,
 		ReplyToID:        activity.ID,
 	}
-	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities", activity.ServiceURL, activity.Conversation.ID)
+	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
 
