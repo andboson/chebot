@@ -13,8 +13,7 @@ func SkypeHook(c echo.Context) error {
 	var request skypeapi.Activity
 	err := c.Bind(&request)
 	if err != nil {
-		log.Printf("--- skype decode msg error!: %+v  ---------- %s", c.Request(), err)
-
+		log.Printf("--- skype decode msg error!: %+v  >>%s", c.Request(), err)
 	}
 
 	repositories.ProcessSkypeMessage(request)
