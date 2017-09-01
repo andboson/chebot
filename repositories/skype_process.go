@@ -43,8 +43,16 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 	id = message.From.ID
 	ctx, _ := userContexts[id]
 
-	if ctx != "" {
+if text == "/?" {
+helpText := "Доступные команды:  \r\n  1. `kino`  - Фильмы в кинотеатрах"
+skypeapi.SendReplyMessage(&message, helpText, SkypeToken.AccessToken)
 
+
+return
+}
+
+
+	if ctx != "" {
 		switch ctx {
 		case "kino":
 			sendFilmsReplyMessage(&message, text, platform)
@@ -113,13 +121,13 @@ func setUserContext(id string, ctx string) {
 		userContexts[id] = ""
 		return
 	}
+	userContextsUpdated[id] = make(chan bool)
 
 	// check and hold
-	_, ok := userContexts[id]
-	if !ok {
+	holded, ok := userContexts[id]
+	if !ok || holded == "" {
 		userContexts[id] = ctx
 		go holdUserContext(id)
-		return
 	}
 
 	userContextsUpdated[id] <- true
