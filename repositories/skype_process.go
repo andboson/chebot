@@ -71,8 +71,6 @@ func detectPlatform(activity skypeapi.Activity) string {
 	var platform = "web"
 	if len(activity.Entities) > 0 {
 		entity, ok := activity.Entities[0].(map[string]interface{})
-		log.Printf("[debug0] error messaging: %+v ------- %+v", entity, activity.Entities[0], ok)
-
 		if ok {
 			platformRaw, ok := entity["platform"]
 			if ok {
@@ -86,17 +84,16 @@ func detectPlatform(activity skypeapi.Activity) string {
 }
 
 func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform string) {
-	log.Printf("activity: %s  ----- %+v", activity.Action, activity)
 	name, ok := KinoNamesRu[location]
 	if !ok {
 		skypeapi.SendReplyMessage(activity, "Не знаю такое место", SkypeToken.AccessToken)
 		log.Printf("unknown location: %s", location)
 		return
 	}
-	skypeapi.SendReplyMessage(activity, "Фильмы в "+name, SkypeToken.AccessToken)
 	films := GetMovies(location)
 
 	if platform == "web" {
+		skypeapi.SendReplyMessage(activity, "Фильмы в "+name, SkypeToken.AccessToken)
 		for _, film := range films {
 			var filmText = " \n "
 			filmText += fmt.Sprintf("\r\n **%s** ", film.Title)
@@ -105,7 +102,7 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 			skypeapi.SendReplyMessage(activity, filmText, SkypeToken.AccessToken)
 		}
 	} else {
-		sendReplyMessageRich(activity, "00000", SkypeToken.AccessToken)
+		sendReplyMessageRich(activity, "Фильмы в "+name, SkypeToken.AccessToken, films)
 	}
 
 }
@@ -174,7 +171,26 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
 
-func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationToken string) error {
+func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationToken string, films []Film) error {
+	var attchmts []skypeapi.Attachment
+
+	for _, film := range films {
+		var att = skypeapi.Attachment{
+			ContentType: "application/vnd.microsoft.card.hero",
+			Content: skypeapi.AttachmentContent{
+				Title: film.Title,
+				Text:  film.TimeBlock,
+				Images: []skypeapi.CardImage{
+					{
+						URL: URL_PREFIX + "/" + film.Img,
+					},
+				},
+			},
+		}
+
+		attchmts = append(attchmts, att)
+	}
+
 	responseActivity := &skypeapi.Activity{
 		Type:             activity.Type,
 		AttachmentLayout: "carousel",
@@ -182,21 +198,8 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 		Conversation:     activity.Conversation,
 		Recipient:        activity.From,
 		Text:             message,
-		Attachments: []skypeapi.Attachment{
-			{
-				ContentType: "application/vnd.microsoft.card.hero",
-				Content: skypeapi.AttachmentContent{
-					Title: "111",
-					Text:  "33",
-					Images: []skypeapi.CardImage{
-						{
-							URL: "http://aka.ms/Fo983c",
-						},
-					},
-				},
-			},
-		},
-		ReplyToID: activity.ID,
+		Attachments:      attchmts,
+		ReplyToID:        activity.ID,
 	}
 	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities", activity.ServiceURL, activity.Conversation.ID)
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
