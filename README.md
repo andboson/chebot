@@ -3,8 +3,8 @@ Cherkassy, UA city bot. For skype, telegram, api.ai exercises
 
 ### platforms
 
-* BotFramework (Skype)
-* Telegram
+* BotFramework (Skype)  ( cherkassy_bot )
+* Telegram ( @cherkass_bot )
 * Api.Ai
 
 
