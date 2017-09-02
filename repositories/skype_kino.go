@@ -35,23 +35,34 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 
 func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authorizationToken string) error {
 	responseActivity := &skypeapi.Activity{
-		Type:         activity.Type,
-		From:         activity.Recipient,
-		Conversation: activity.Conversation,
-		Recipient:    activity.From,
-		Text:         message,
-		InputHint:    "место (lyubava\\plaza)",
-		SuggestedActions: skypeapi.SuggestedActions{
-			Actions: []skypeapi.CardAction{
-				{
+		Type:             activity.Type,
+		From:             activity.Recipient,
+		Conversation:     activity.Conversation,
+		Recipient:        activity.From,
+		Text:             message,
+		InputHint:        "место (lyubava\\plaza)",
+		AttachmentLayout: "list",
+		Attachments: []skypeapi.Attachment{
+			{
+				ContentType: "application/vnd.microsoft.card.hero",
+				Content: skypeapi.AttachmentContent{
 					Title: "Любава",
-					Type:  "imBack",
-					Value: "lyubava",
+					Tap: skypeapi.CardAction{
+						Title: "Любава",
+						Type:  "imBack",
+						Value: "lyubava",
+					},
 				},
-				{
+			},
+			{
+				ContentType: "application/vnd.microsoft.card.hero",
+				Content: skypeapi.AttachmentContent{
 					Title: "Днепроплаза",
-					Type:  "imBack",
-					Value: "plaza",
+					Tap: skypeapi.CardAction{
+						Title: "Днепроплаза",
+						Type:  "imBack",
+						Value: "plaza",
+					},
 				},
 			},
 		},
