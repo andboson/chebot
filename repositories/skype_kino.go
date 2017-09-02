@@ -22,7 +22,7 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 		for _, film := range films {
 			var filmText = " \n "
 			filmText += fmt.Sprintf("\r\n **%s** ", film.Title)
-			filmText += fmt.Sprintf("\r\n %s", film.TimeBlock)
+			filmText += fmt.Sprintf("\r\n [%s](%s)", film.TimeBlock, URL_PREFIX+"/"+film.Link)
 			filmText += fmt.Sprintf("[:](%s)", URL_PREFIX+"/"+film.Img)
 			skypeapi.SendReplyMessage(activity, filmText, SkypeToken.AccessToken)
 			log.Printf("[debug skype] send web resp")
@@ -71,14 +71,14 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 			Content: skypeapi.AttachmentContent{
 				Title: film.Title,
 				Text:  film.TimeBlock,
+				Tap: skypeapi.CardAction{
+					Type:  "openUrl",
+					Value: URL_PREFIX + "/" + film.Link,
+				},
 				Images: []skypeapi.CardImage{
 					{
 						URL: URL_PREFIX + "/" + film.Img,
 						Alt: film.Title,
-						Tap: skypeapi.CardAction{
-							Type:  "OpenUrl",
-							Value: URL_PREFIX + film.Link,
-						},
 					},
 				},
 			},
