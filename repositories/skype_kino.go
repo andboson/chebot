@@ -6,6 +6,9 @@ import (
 	"log"
 )
 
+const WEB_PLATFORM = "web-"
+
+
 func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform string) {
 	name, ok := KinoNamesRu[location]
 	url, _ := KinoUrls[location]
@@ -17,7 +20,7 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 	films := GetMovies(location)
 	name = fmt.Sprintf("[%s](%s)", name, url)
 
-	if platform == "web" {
+	if platform == WEB_PLATFORM {
 		skypeapi.SendReplyMessage(activity, "Фильмы в "+name, SkypeToken.AccessToken)
 		for _, film := range films {
 			var filmText = " \n "
@@ -41,12 +44,13 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 		Recipient:        activity.From,
 		Text:             message,
 		InputHint:        "место (lyubava\\plaza)",
-		AttachmentLayout: "list",
+		AttachmentLayout: "carousel",
 		Attachments: []skypeapi.Attachment{
 			{
 				ContentType: "application/vnd.microsoft.card.hero",
 				Content: skypeapi.AttachmentContent{
 					Title: "Любава",
+					Text: "нажмите, чтобы выбрать",
 					Tap: skypeapi.CardAction{
 						Title: "Любава",
 						Type:  "imBack",
@@ -58,6 +62,7 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 				ContentType: "application/vnd.microsoft.card.hero",
 				Content: skypeapi.AttachmentContent{
 					Title: "Днепроплаза",
+					Text: "нажмите, чтобы выбрать",
 					Tap: skypeapi.CardAction{
 						Title: "Днепроплаза",
 						Type:  "imBack",

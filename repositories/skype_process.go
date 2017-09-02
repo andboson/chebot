@@ -72,7 +72,7 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "films") {
 		setUserContext(id, "kino")
 		var prompt = " (lyubava\\plaza)"
-		if platform != "web" {
+		if platform != WEB_PLATFORM {
 			prompt = ""
 		}
 		err := sendChoicePlaceReplyMessage(&message, "Выберите  кинотеатр"+prompt, SkypeToken.AccessToken)
@@ -84,7 +84,7 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 
 // detect sender platform
 func detectPlatform(activity skypeapi.Activity) string {
-	var platform = "web"
+	var platform string
 	if len(activity.Entities) > 0 {
 		entity, ok := activity.Entities[0].(map[string]interface{})
 		if ok {
