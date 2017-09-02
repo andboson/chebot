@@ -8,12 +8,14 @@ import (
 
 func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform string) {
 	name, ok := KinoNamesRu[location]
+	url, _ := KinoUrls[location]
 	if !ok {
 		skypeapi.SendReplyMessage(activity, "Не знаю такое место", SkypeToken.AccessToken)
 		log.Printf("unknown location: %s", location)
 		return
 	}
 	films := GetMovies(location)
+	name = fmt.Sprintf("[%s](%s)", name, url)
 
 	if platform == "web" {
 		skypeapi.SendReplyMessage(activity, "Фильмы в "+name, SkypeToken.AccessToken)
@@ -72,6 +74,11 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 				Images: []skypeapi.CardImage{
 					{
 						URL: URL_PREFIX + "/" + film.Img,
+						Alt: film.Title,
+						Tap: skypeapi.CardAction{
+							Type:  "OpenUrl",
+							Value: URL_PREFIX + film.Link,
+						},
 					},
 				},
 			},
@@ -93,4 +100,3 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
-

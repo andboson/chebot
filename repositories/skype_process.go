@@ -42,6 +42,10 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 	id = message.From.ID
 	ctx, _ := userContexts[id]
 
+	log.Printf("[skype] text: %s context:", text, ctx)
+	text = strings.Replace(text, "CherkassyBot", "", -1)
+	text = strings.TrimSpace(text)
+
 	// help
 	if text == "/?" {
 		helpText := "Доступные команды:  \r\n  1. `kino`  - Фильмы в кинотеатрах"
