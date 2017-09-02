@@ -36,6 +36,7 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 	var id string
 	var text string
 	var platform string
+	var err error
 	platform = detectPlatform(message)
 	text = message.Text
 	id = message.From.ID
@@ -44,7 +45,10 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 	// help
 	if text == "/?" {
 		helpText := "Доступные команды:  \r\n  1. `kino`  - Фильмы в кинотеатрах"
-		skypeapi.SendReplyMessage(&message, helpText, SkypeToken.AccessToken)
+		err = skypeapi.SendReplyMessage(&message, helpText, SkypeToken.AccessToken)
+		if err != nil {
+			log.Printf("[skype] error messaging: %s", err)
+		}
 
 		return
 	}
