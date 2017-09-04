@@ -48,7 +48,7 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 
 	// help
 	if text == "/?" {
-		helpText := "Доступные команды:  \r\n  1. `kino`  - Фильмы в кинотеатрах"
+		helpText := "Доступные команды:  \r\n  1. `kino`  - Фильмы в кинотеатрах  \r\n  2. `taxi`  - Список такси"
 		err = skypeapi.SendReplyMessage(&message, helpText, SkypeToken.AccessToken)
 		if err != nil {
 			log.Printf("[skype] error messaging: %s", err)

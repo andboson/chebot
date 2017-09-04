@@ -41,7 +41,7 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 
 	textList := "Номера такси " + fmt.Sprintf("(%d)", len(taxiList))
 	for number, firm := range taxiList {
-		line := fmt.Sprintf(" \n # %s : %s",  number, firm)
+		line := fmt.Sprintf(" \n # %s - %s",  number, firm)
 		textList += line
 	}
 	err = skypeapi.SendReplyMessage(activity, textList, SkypeToken.AccessToken)
