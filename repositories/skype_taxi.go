@@ -42,12 +42,8 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 		var att = skypeapi.Attachment{
 			ContentType: "application/vnd.microsoft.card.hero",
 			Content: skypeapi.AttachmentContent{
-				Title: firm,
-				Text:  fmt.Sprintf("[%s](tel:%s)", number, number),
-				Tap: skypeapi.CardAction{
-					Type:  "call",
-					Value: "tel:" + number,
-				},
+				Title:    firm,
+				Subtitle: number,
 			},
 		}
 
@@ -56,7 +52,7 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 
 	responseActivity := &skypeapi.Activity{
 		Type:             activity.Type,
-		AttachmentLayout: "carousel",
+		AttachmentLayout: "list",
 		From:             activity.Recipient,
 		Conversation:     activity.Conversation,
 		Recipient:        activity.From,
