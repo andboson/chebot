@@ -56,11 +56,11 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 
 	responseActivity := &skypeapi.Activity{
 		Type:             activity.Type,
-		AttachmentLayout: "list",
+		AttachmentLayout: "carousel",
 		From:             activity.Recipient,
 		Conversation:     activity.Conversation,
 		Recipient:        activity.From,
-		Text:             "Номера такси (1)",
+		Text:             "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
 		Attachments:      attchmts,
 		ReplyToID:        activity.ID,
 	}
