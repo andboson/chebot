@@ -18,7 +18,7 @@ type Config struct {
 	SkypeAppID          string `json:"skype_id"`
 }
 
-func init() {
+func InitConfig() {
 	var mu sync.Mutex
 	mu.Lock()
 	defer mu.Unlock()

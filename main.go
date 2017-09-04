@@ -5,15 +5,14 @@ import (
 	"github.com/andboson/chebot/routes"
 	"github.com/andboson/chebot/controllers"
 	"github.com/andboson/chebot/repositories"
+	"github.com/andboson/chebot/models"
 )
 
 func main() {
 	e := routes.Router()
 	e.Use(middleware.Logger())
-	//e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
-	//	Level: 5,
-	//}))
 	e.Use(middleware.Recover())
+	models.InitConfig()
 	go controllers.TelegramMessagesHandler()
 	repositories.InitSkype()
 

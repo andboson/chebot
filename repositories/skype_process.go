@@ -57,6 +57,34 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 		return
 	}
 
+	// Taxi
+	if text == "taxi" {
+		err = SendTaxiList(&message, text, platform)
+		if err != nil {
+			log.Printf("[skype] taxi err messaging %s", err)
+		}
+
+		return
+	}
+
+	if strings.Contains(text, "taxi add") {
+		err = AddTaxiToList(&message, text, platform)
+		if err != nil {
+			log.Printf("[skype] taxi add err messaging %s", err)
+		}
+
+		return
+	}
+
+	if strings.Contains(text, "taxi clear") {
+		err = ClearTaxi(&message, text, platform)
+		if err != nil {
+			log.Printf("[skype] taxi err clearing %s", err)
+		}
+
+		return
+	}
+
 	// process text with context
 	if ctx != "" {
 		switch ctx {
