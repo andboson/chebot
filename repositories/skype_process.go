@@ -60,8 +60,6 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 	// Taxi
 	if strings.ToLower(text) == "taxi" {
 		err = SendTaxiList(&message, text, platform)
-
-		skypeapi.SendReplyMessage(&message,"[911](tel:911)", SkypeToken.AccessToken)
 		if err != nil {
 			log.Printf("[skype] taxi err messaging %s", err)
 		}
