@@ -42,8 +42,8 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 		var att = skypeapi.Attachment{
 			ContentType: "application/vnd.microsoft.card.hero",
 			Content: skypeapi.AttachmentContent{
-				Title: "tel:" + number,
-				Text:  firm,
+				Title: firm,
+				Text:  fmt.Sprintf("[%s](tel:%s)", number, number),
 				Tap: skypeapi.CardAction{
 					Type:  "call",
 					Value: "tel:" + number,
