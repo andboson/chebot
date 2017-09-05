@@ -53,7 +53,7 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 	var att = skypeapi.Attachment{
 		ContentType: "application/vnd.microsoft.card.hero",
 		Content: skypeapi.AttachmentContent{
-			Title:    "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
+			Title:   "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
 			Buttons: btns,
 		},
 	}
@@ -82,8 +82,10 @@ func LoadTaxi() map[string]string {
 		log.Printf("[taxi] err loading file %s", err)
 	}
 
-	contentString := strings.Trim(string(content), "\r\n")
+	contentString := strings.Trim(string(content), "\n")
+	contentString = strings.Trim(contentString, "\r")
 	lines := strings.Split(contentString, "\r\n")
+
 	for _, line := range lines {
 		var taxiArr = strings.Split(line, "|")
 		if len(taxiArr) == 2 {

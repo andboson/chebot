@@ -5,6 +5,7 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 	"sync"
 	"time"
+	"github.com/labstack/gommon/log"
 )
 
 const (
@@ -105,6 +106,7 @@ func processUserMessage(update tgbotapi.Update, ctx string, uid int) string {
 		text = update.Message.Text
 	}
 
+	log.Printf("[tlgrm] text: %s  ctx: %s", text, ctx)
 	// process context
 	if text != "" && ctx != "" {
 		switch ctx {
@@ -129,6 +131,12 @@ func processUserMessage(update tgbotapi.Update, ctx string, uid int) string {
 		msg.ReplyMarkup = &keyb
 		ctx = CONTEXT_KINO
 		TeleLastMsgID[uid] = 0
+	}
+
+	if text == "/taxi" {
+		processTaxiRequest("", chatId, messageId, uid)
+
+		return ctx
 	}
 
 	// new user
