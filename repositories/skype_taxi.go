@@ -48,14 +48,9 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 
 	for number, firm := range taxiList {
 		var att = skypeapi.Attachment{
-			ContentType: "application/vnd.microsoft.card.hero",
+			ContentType: "application/vnd.microsoft.card.signin",
 			Content: skypeapi.AttachmentContent{
-				Title: firm,
-				Text:  number,
-				Tap: skypeapi.CardAction{
-					Type:  "openUrl",
-					Value: "callto:" + number,
-				},
+				Text: number + firm,
 				Buttons: []skypeapi.CardAction{
 					{
 						Title: number,
@@ -67,19 +62,20 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 		}
 
 		attchmts = append(attchmts, att)
+		break
 	}
 
 	responseActivity := &skypeapi.Activity{
-		Type:             activity.Type,
-		AttachmentLayout: "carousel",
-		From:             activity.Recipient,
-		Conversation:     activity.Conversation,
-		Recipient:        activity.From,
-		Text:             "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
-		Attachments:      attchmts,
-		ReplyToID:        activity.ID,
+		Type: activity.Type,
+		//AttachmentLayout: "carousel",
+		From:         activity.Recipient,
+		Conversation: activity.Conversation,
+		Recipient:    activity.From,
+		Text:         "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
+		Attachments:  attchmts,
+		ReplyToID:    activity.ID,
 	}
-	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
+	replyUrl := fmt.Sprintf("%v/v3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
 	err = skypeapi.SendActivityRequest(responseActivity, replyUrl, SkypeToken.AccessToken)
 
 	return err
