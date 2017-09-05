@@ -51,7 +51,7 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 				Content: skypeapi.AttachmentContent{
 					Title: "Любава",
 					Text: "нажмите, чтобы выбрать",
-					Tap: skypeapi.CardAction{
+					Tap: &skypeapi.CardAction{
 						Title: "Любава",
 						Type:  "imBack",
 						Value: "lyubava",
@@ -63,7 +63,7 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 				Content: skypeapi.AttachmentContent{
 					Title: "Днепроплаза",
 					Text: "нажмите, чтобы выбрать",
-					Tap: skypeapi.CardAction{
+					Tap: &skypeapi.CardAction{
 						Title: "Днепроплаза",
 						Type:  "imBack",
 						Value: "plaza",
@@ -87,7 +87,7 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 			Content: skypeapi.AttachmentContent{
 				Title: film.Title,
 				Text:  film.TimeBlock,
-				Tap: skypeapi.CardAction{
+				Tap: &skypeapi.CardAction{
 					Type:  "openUrl",
 					Value: URL_PREFIX + "/" + film.Link,
 				},
