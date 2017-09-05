@@ -50,11 +50,18 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 		var att = skypeapi.Attachment{
 			ContentType: "application/vnd.microsoft.card.signin",
 			Content: skypeapi.AttachmentContent{
-				Text: number + firm,
+				Text:     number + firm,
+				Title:    "11",
+				Subtitle: "222",
+				Images: []skypeapi.CardImage{
+					{
+						URL: "https://placeholdit.imgix.net/~text?txtsize=56&txt=Contoso%20Flowers&w=640&h=330",
+					},
+				},
 				Buttons: []skypeapi.CardAction{
 					{
 						Title: number,
-						Type:  "openUrl",
+						Type:  "imBack",
 						Value: "callto:" + number,
 					},
 				},
@@ -71,6 +78,7 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 		From:         activity.Recipient,
 		Conversation: activity.Conversation,
 		Recipient:    activity.From,
+		InputHint:    "sele",
 		Text:         "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
 		Attachments:  attchmts,
 		ReplyToID:    activity.ID,
