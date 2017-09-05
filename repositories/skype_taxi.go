@@ -39,13 +39,6 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 	var attchmts []skypeapi.Attachment
 	var err error
 
-	//textList := "Номера такси " + fmt.Sprintf("(%d)", len(taxiList))
-	//for number, firm := range taxiList {
-	//	line := fmt.Sprintf(" \n # %s - %s", number, firm)
-	//	textList += line
-	//}
-	//err = skypeapi.SendReplyMessage(activity, textList, SkypeToken.AccessToken)
-
 	var btns []skypeapi.CardAction
 	for number, firm := range taxiList {
 		btn := skypeapi.CardAction{
@@ -60,7 +53,7 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 	var att = skypeapi.Attachment{
 		ContentType: "application/vnd.microsoft.card.hero",
 		Content: skypeapi.AttachmentContent{
-			Text:    "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
+			Title:    "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
 			Buttons: btns,
 		},
 	}
