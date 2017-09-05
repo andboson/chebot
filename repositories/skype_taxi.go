@@ -39,31 +39,28 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 	var attchmts []skypeapi.Attachment
 	var err error
 
-	textList := "Номера такси " + fmt.Sprintf("(%d)", len(taxiList))
-	for number, firm := range taxiList {
-		line := fmt.Sprintf(" \n # %s - %s", number, firm)
-		textList += line
-	}
-	err = skypeapi.SendReplyMessage(activity, textList, SkypeToken.AccessToken)
+	//textList := "Номера такси " + fmt.Sprintf("(%d)", len(taxiList))
+	//for number, firm := range taxiList {
+	//	line := fmt.Sprintf(" \n # %s - %s", number, firm)
+	//	textList += line
+	//}
+	//err = skypeapi.SendReplyMessage(activity, textList, SkypeToken.AccessToken)
 
 	for number, firm := range taxiList {
 		var att = skypeapi.Attachment{
-			ContentType: "application/vnd.microsoft.card.signin",
+			ContentType: "application/vnd.microsoft.card.hero",
 			Content: skypeapi.AttachmentContent{
-				Text:     number + firm,
-				Title:    "11",
-				Subtitle: "222",
-				Images: []skypeapi.CardImage{
-					{
-						URL: "https://placeholdit.imgix.net/~text?txtsize=56&txt=Contoso%20Flowers&w=640&h=330",
-					},
-				},
+				Text: number + " - " + firm,
 				Buttons: []skypeapi.CardAction{
 					{
 						Title: number,
 						Type:  "imBack",
-						Value: "callto:" + number,
+						Value: "tel:" + number,
 					},
+				},
+				Tap: &skypeapi.CardAction{
+					Type:  "call",
+					Value: "tel:" + number,
 				},
 			},
 		}
@@ -73,15 +70,15 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 	}
 
 	responseActivity := &skypeapi.Activity{
-		Type: activity.Type,
-		//AttachmentLayout: "carousel",
-		From:         activity.Recipient,
-		Conversation: activity.Conversation,
-		Recipient:    activity.From,
-		InputHint:    "sele",
-		Text:         "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
-		Attachments:  attchmts,
-		ReplyToID:    activity.ID,
+		Type:             activity.Type,
+		AttachmentLayout: "carousel",
+		From:             activity.Recipient,
+		Conversation:     activity.Conversation,
+		Recipient:        activity.From,
+		InputHint:        "select number",
+		Text:             "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
+		Attachments:      attchmts,
+		ReplyToID:        activity.ID,
 	}
 	replyUrl := fmt.Sprintf("%v/v3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
 	err = skypeapi.SendActivityRequest(responseActivity, replyUrl, SkypeToken.AccessToken)
