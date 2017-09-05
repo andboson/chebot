@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"fmt"
-	"github.com/labstack/gommon/log"
 	"gopkg.in/telegram-bot-api.v4"
 )
 
