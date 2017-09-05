@@ -46,29 +46,25 @@ func SendTaxiList(activity *skypeapi.Activity, text string, platform string) err
 	//}
 	//err = skypeapi.SendReplyMessage(activity, textList, SkypeToken.AccessToken)
 
+	var btns []skypeapi.CardAction
 	for number, firm := range taxiList {
-		var att = skypeapi.Attachment{
-			ContentType: "application/vnd.microsoft.card.hero",
-			Content: skypeapi.AttachmentContent{
-				Text: number + " - " + firm,
-				Buttons: []skypeapi.CardAction{
-					{
-						Title: number,
-						Type:  "imBack",
-						Value: "tel:" + number,
-					},
-				},
-				Tap: &skypeapi.CardAction{
-					Type:  "call",
-					Value: "tel:" + number,
-				},
-			},
+		btn := skypeapi.CardAction{
+			Title: firm + " - " + number,
+			Type:  "imBack",
+			Value: number,
 		}
 
-		attchmts = append(attchmts, att)
-		break
+		btns = append(btns, btn)
 	}
 
+	var att = skypeapi.Attachment{
+		ContentType: "application/vnd.microsoft.card.hero",
+		Content: skypeapi.AttachmentContent{
+			Text:    "Номера такси " + fmt.Sprintf("(%d)", len(taxiList)),
+			Buttons: btns,
+		},
+	}
+	attchmts = append(attchmts, att)
 	responseActivity := &skypeapi.Activity{
 		Type:             activity.Type,
 		AttachmentLayout: "carousel",
