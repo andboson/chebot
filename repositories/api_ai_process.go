@@ -5,6 +5,7 @@ import (
 	"github.com/andrewstuart/goq"
 	"log"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
@@ -23,7 +24,6 @@ var KinoNames = map[string]string{
 	"lyubava": "Lyubava ",
 	"plaza":   "Dniproplaza ",
 }
-
 
 type Films struct {
 	FilmTds []Film `goquery:"div.film"`
@@ -55,16 +55,14 @@ func GetMovies(cinema string) []Film {
 		log.Fatal(err)
 	}
 
+	re := regexp.MustCompile(`\s+|\n+`)
 	for idx, flm := range ex.FilmTds {
 		img := strings.TrimRight(flm.Img, "')")
 		img = strings.TrimLeft(img, "background-image: url('")
-		times := strings.Replace(flm.TimeBlock, " ", "",-1)
-		times = strings.Replace(times, "\n", "|",-1)
-		times = strings.Replace(times, "|||||", " ",-1)
+		times := re.ReplaceAllLiteralString(flm.TimeBlock, " ")
 		ex.FilmTds[idx].Img = img
 		ex.FilmTds[idx].TimeBlock = times
 	}
-
 
 	return ex.FilmTds
 }
