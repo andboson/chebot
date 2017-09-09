@@ -8,7 +8,6 @@ import (
 
 const WEB_PLATFORM = "web-"
 
-
 func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform string) {
 	name, ok := KinoNamesRu[location]
 	url, _ := KinoUrls[location]
@@ -53,7 +52,7 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 				ContentType: "application/vnd.microsoft.card.hero",
 				Content: skypeapi.AttachmentContent{
 					Title: "Любава",
-					Text: "нажмите, чтобы выбрать",
+					Text:  "нажмите, чтобы выбрать",
 					Tap: &skypeapi.CardAction{
 						Title: "Любава",
 						Type:  "imBack",
@@ -65,7 +64,7 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 				ContentType: "application/vnd.microsoft.card.hero",
 				Content: skypeapi.AttachmentContent{
 					Title: "Днепроплаза",
-					Text: "нажмите, чтобы выбрать",
+					Text:  "нажмите, чтобы выбрать",
 					Tap: &skypeapi.CardAction{
 						Title: "Днепроплаза",
 						Type:  "imBack",
@@ -116,6 +115,8 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 		Attachments:      attchmts,
 		ReplyToID:        activity.ID,
 	}
-	replyUrl := fmt.Sprintf("%vv3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
+	replyUrl := fmt.Sprintf("%v/v3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
+	log.Printf("[skype] ---- %#v", responseActivity)
+
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
