@@ -1,24 +1,27 @@
 package controllers
 
 import (
-	"github.com/andboson/skypeapi"
 	"github.com/labstack/echo"
 	"github.com/labstack/gommon/log"
 	"net/http"
 )
 
+const token = "f1c9830e3258c325be00bc6f7cd5324a"
+
+type FaceBookCheck struct {
+	HubMode      string `json:"hub.mode"`
+	HubChallenge string `json:"hub.challenge"`
+	HubToken     string `json:"hub.verify_token"`
+}
+
 func FacebookHook(c echo.Context) error {
-	var request skypeapi.Activity
+	var request FaceBookCheck
 	err := c.Bind(&request)
 	if err != nil {
 		log.Printf("--- skype decode msg error!: %+v  >>%s", c.Request(), err)
 	}
 
-	resp := map[string]string{
-		"status": "success",
-	}
+	log.Printf("user --  %#v", request)
 
-	log.Printf("user --", request.From.Name, request.From.ID)
-
-	return c.JSON(http.StatusOK, resp)
+	return c.String(http.StatusOK, request.HubChallenge)
 }
