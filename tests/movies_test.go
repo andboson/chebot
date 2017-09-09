@@ -4,14 +4,15 @@ import (
 	"testing"
 	"github.com/andboson/chebot/repositories"
 	"github.com/stretchr/testify/assert"
-	"github.com/labstack/gommon/log"
+	"log"
 )
 
 func TestParse(t *testing.T) {
 	films := repositories.GetMovies("lyubava")
 	assert.True(t, len(films) > 0)
 
-	data := repositories.GetMovieListResponse(films, "lyubava")
-	log.Printf("--data~:  %+v", data)
+	//data := repositories.GetMovieListResponse(films, "lyubava")
+	//log.Printf("--data~:  %+v", data)
+	log.Printf("--data~: \r\n  %+v", films[0])
 }
 

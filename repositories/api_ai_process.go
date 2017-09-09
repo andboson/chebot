@@ -5,12 +5,13 @@ import (
 	"github.com/andrewstuart/goq"
 	"log"
 	"net/http"
+	"strings"
 )
 
 const (
-	LUBAVA_URL = "http://cherkassy.multiplex.ua/Poster.aspx?id=16"
-	PLAZA_URL  = "http://cherkassy.multiplex.ua/Poster.aspx?id=10"
-	URL_PREFIX = "https://cherkassy.multiplex.ua"
+	LUBAVA_URL = "https://multiplex.ua/cinema/cherkasy/lyubava"
+	PLAZA_URL  = "https://multiplex.ua/cinema/cherkasy/dniproplaza"
+	URL_PREFIX = "https://multiplex.ua/"
 )
 
 var KinoUrls = map[string]string{
@@ -25,14 +26,14 @@ var KinoNames = map[string]string{
 
 
 type Films struct {
-	FilmTds []Film `goquery:"td.afisha_td_bottom"`
+	FilmTds []Film `goquery:"div.film"`
 }
 
 type Film struct {
-	Img       string `goquery:"a img,[src]"`
+	Img       string `goquery:"div.poster,[style]"`
 	Link      string `goquery:"a,[href]"`
-	Title     string `goquery:".afisha_film"`
-	TimeBlock string `goquery:".afisha_time_block"`
+	Title     string `goquery:".info a"`
+	TimeBlock string `goquery:".info .sessions,text"`
 }
 
 func GetMovies(cinema string) []Film {
@@ -53,6 +54,17 @@ func GetMovies(cinema string) []Film {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	for idx, flm := range ex.FilmTds {
+		img := strings.TrimRight(flm.Img, "')")
+		img = strings.TrimLeft(img, "background-image: url('")
+		times := strings.Replace(flm.TimeBlock, " ", "",-1)
+		times = strings.Replace(times, "\n", "|",-1)
+		times = strings.Replace(times, "|||||", " ",-1)
+		ex.FilmTds[idx].Img = img
+		ex.FilmTds[idx].TimeBlock = times
+	}
+
 
 	return ex.FilmTds
 }
