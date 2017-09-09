@@ -82,8 +82,9 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 
 func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationToken string, films []Film) error {
 	var attchmts []skypeapi.Attachment
-
+ i := 0;
 	for _, film := range films {
+i++;
 		var att = skypeapi.Attachment{
 			ContentType: "application/vnd.microsoft.card.hero",
 			Content: skypeapi.AttachmentContent{
@@ -103,6 +104,9 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 		}
 
 		attchmts = append(attchmts, att)
+if i == 7{
+break
+}
 	}
 
 	responseActivity := &skypeapi.Activity{
@@ -116,7 +120,7 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 		ReplyToID:        activity.ID,
 	}
 	replyUrl := fmt.Sprintf("%v/v3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
-	//log.Printf("[skype] ---- %#v", responseActivity)
+    //log.Printf("[skype] ---- %#v", films, replyUrl)
 
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
