@@ -31,7 +31,10 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 			log.Printf("[debug skype] send web resp")
 		}
 	} else {
-		sendReplyMessageRich(activity, "Фильмы в "+name, SkypeToken.AccessToken, films)
+		err := sendReplyMessageRich(activity, "Фильмы в "+name, SkypeToken.AccessToken, films)
+		if err != nil {
+			log.Printf("[skype] error films msg: %s", err)
+		}
 	}
 
 }
