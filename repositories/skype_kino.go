@@ -91,11 +91,11 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 				Text:  film.TimeBlock,
 				Tap: &skypeapi.CardAction{
 					Type:  "openUrl",
-					Value: URL_PREFIX + "/" + film.Link,
+					Value: URL_PREFIX + film.Link,
 				},
 				Images: []skypeapi.CardImage{
 					{
-						URL: URL_PREFIX + "/" + film.Img,
+						URL: URL_PREFIX + film.Img,
 						Alt: film.Title,
 					},
 				},
@@ -116,7 +116,7 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 		ReplyToID:        activity.ID,
 	}
 	replyUrl := fmt.Sprintf("%v/v3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
-	log.Printf("[skype] ---- %#v", responseActivity)
+	//log.Printf("[skype] ---- %#v", responseActivity)
 
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }
