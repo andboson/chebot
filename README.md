@@ -11,6 +11,7 @@ Cherkassy, UA city bot. For skype, telegram, api.ai exercises
 ### implemented commands:
 
 * kino
+* taxi
 
 
 ### tools
