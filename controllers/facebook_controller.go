@@ -7,6 +7,7 @@ import (
 	"github.com/maciekmm/messenger-platform-go-sdk"
 	"github.com/maciekmm/messenger-platform-go-sdk/template"
 	"net/http"
+	"time"
 )
 
 var FbMess *messenger.Messenger
@@ -42,6 +43,8 @@ func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg mess
 	}
 
 	FbMess.SendAction(messenger.Recipient{ID: opts.Sender.ID}, messenger.SenderActionTypingOn)
+	time.Sleep(1 * time.Second)
+	FbMess.SendAction(messenger.Recipient{ID: opts.Sender.ID}, messenger.SenderActionTypingOff)
 	btns := template.ButtonTemplate{
 		Text: "Выберите кинотеатр",
 		Buttons: []template.Button{
@@ -59,8 +62,9 @@ func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg mess
 
 	mq := messenger.MessageQuery{}
 	mq.Template(btns)
+	mq.Text("jndtn")
 	mq.RecipientID( opts.Sender.ID)
-	FbMess.SendMessage(mq)
+	resp, err2 := FbMess.SendMessage(mq)
 	fmt.Printf("%+v", resp)
-	log.Printf("[fb] %#v", event)
+	log.Printf("[fb] %#v", resp, err2)
 }
