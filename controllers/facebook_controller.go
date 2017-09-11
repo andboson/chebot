@@ -25,10 +25,16 @@ func InitFb() {
 		AccessToken: models.Conf.FbPageToken,
 	}
 	FbMess.MessageReceived = MessageReceived
+	FbMess.Postback = MessagePostback
 	go func() {
 		http.HandleFunc("/facebook.hook", FbMess.Handler)
 		log.Fatal(http.ListenAndServe(":1324", nil))
 	}()
+}
+
+func MessagePostback(event messenger.Event, opts messenger.MessageOpts, payload messenger.Postback) {
+	log.Printf("====---==== %+v----%+v ---- %+v", opts, event, payload)
+
 }
 
 func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg messenger.ReceivedMessage) {
@@ -37,6 +43,9 @@ func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg mess
 		fmt.Println(err)
 		return
 	}
+
+	log.Printf("======== %+v----%+v", opts, event)
+
 	resp, err := FbMess.SendSimpleMessage(opts.Sender.ID, fmt.Sprintf("Hello, %s %s, %s", profile.FirstName, profile.LastName, msg.Text))
 	if err != nil {
 		fmt.Println(err)
@@ -50,12 +59,12 @@ func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg mess
 		Buttons: []template.Button{
 			{
 				Title:   "Любава",
-				Type:    "postback",
+				Type:    template.ButtonTypePostback,
 				Payload: "lyubava",
 			},
 			{
 				Title:   "Днепроплаза",
-				Type:    "postback",
+				Type:    template.ButtonTypePostback,
 				Payload: "plaza",
 			},
 		},
