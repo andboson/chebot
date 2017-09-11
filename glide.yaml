@@ -10,3 +10,5 @@ import:
 - package: github.com/technoweenie/multipartstreamer
 - package: github.com/michivip/skypeapi
 - package: github.com/andboson/skypeapi
+- package: github.com/maciekmm/messenger-platform-go-sdk
+  version: v4.5

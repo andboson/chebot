@@ -1,12 +1,13 @@
 package controllers
 
 import (
-	"github.com/labstack/echo"
+	"github.com/andboson/chebot/models"
+	"github.com/maciekmm/messenger-platform-go-sdk"
+	"fmt"
 	"github.com/labstack/gommon/log"
-	"net/http"
 )
 
-const token = "f1c9830e3258c325be00bc6f7cd5324a"
+var FbMess *messenger.Messenger
 
 type FaceBookCheck struct {
 	HubMode      string `json:"hub.mode"`
@@ -14,14 +15,25 @@ type FaceBookCheck struct {
 	HubToken     string `json:"hub.verify_token"`
 }
 
-func FacebookHook(c echo.Context) error {
-	var request FaceBookCheck
-	err := c.Bind(&request)
-	if err != nil {
-		log.Printf("--- skype decode msg error!: %+v  >>%s", c.Request(), err)
+func InitFb() {
+	FbMess = &messenger.Messenger{
+		VerifyToken: models.Conf.FbVerifyToken,
+		AppSecret:   models.Conf.FbAppSecret,
+		AccessToken: models.Conf.FbPageToken,
 	}
+	FbMess.MessageReceived = MessageReceived
+}
 
-	log.Printf("user --  %#v", request)
-
-	return c.String(http.StatusOK, request.HubChallenge)
+func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg messenger.ReceivedMessage) {
+	profile, err := FbMess.GetProfile(opts.Sender.ID)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	resp, err := FbMess.SendSimpleMessage(opts.Sender.ID, fmt.Sprintf("Hello, %s %s, %s", profile.FirstName, profile.LastName, msg.Text))
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("%+v", resp)
+	log.Printf("[fb] %#v", event)
 }

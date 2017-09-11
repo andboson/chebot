@@ -88,7 +88,7 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 	// process text with context
 	if ctx != "" {
 		switch ctx {
-		case "kino":
+		case CONTEXT_KINO:
 			sendFilmsReplyMessage(&message, text, platform)
 			setUserContext(id, "")
 		}
@@ -98,7 +98,7 @@ func ProcessSkypeMessage(message skypeapi.Activity) {
 
 	// catch commands if empty context
 	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "films") {
-		setUserContext(id, "kino")
+		setUserContext(id, CONTEXT_KINO)
 		var prompt = " (lyubava\\plaza)"
 		if platform != WEB_PLATFORM {
 			prompt = ""

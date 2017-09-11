@@ -1,5 +1,5 @@
-hash: 999e49cda7a97023eb02483aace6afca77aaffa59d5a868fe4d8fe768d80630b
-updated: 2017-09-05T22:46:50.705856131+03:00
+hash: d779a5b72e02f9c285747319c3b1a94e63033866daf755f13f4ba2ecec21174f
+updated: 2017-09-10T23:29:25.560507967+03:00
 imports:
 - name: github.com/andboson/skypeapi
   version: 38136872c20d562a3965883c0b6d3913015b3618
@@ -20,12 +20,14 @@ imports:
   - color
   - log
   - random
+- name: github.com/maciekmm/messenger-platform-go-sdk
+  version: 0cb6e825b6fb086b37ffee383ed3057f3a706d0c
 - name: github.com/mattn/go-colorable
   version: 6df6d4d004b64986bbb0d1b25945f42b44787e90
 - name: github.com/mattn/go-isatty
   version: fc9e8d8ef48496124e79ae0df75490096eccf6fe
 - name: github.com/michivip/skypeapi
-  version: acc2075e02199cf6a3923aecb1811c2ff806198a
+  version: b1a966a39b929f1aa424f31a645764dd96b5a94a
 - name: github.com/PuerkitoBio/goquery
   version: 152b1a2c8f5d0340f658bb656032a39b94e52958
 - name: github.com/stretchr/testify
@@ -38,9 +40,8 @@ imports:
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
-- name: glide get github.com/stretchr/testify/assert
 - name: golang.org/x/crypto
-  version: 81e90905daefcd6fd217b62423c0908922eadb30
+  version: 9ba3862cf6a5452ae579de98f9364dd2e544844c
   subpackages:
   - acme
   - acme/autocert

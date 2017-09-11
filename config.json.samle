@@ -2,5 +2,9 @@
   "incoming_google_token": "",
   "telegram_token": "",
   "skype_pass":"",
-  "skype_id":""
+  "skype_id":"",
+  "skype_admin_id": "", // optional
+  "fb_page_token": "",
+  "fb_app_secret":"",
+  "fb_verify_token":""
 }

@@ -9,12 +9,13 @@ import (
 )
 
 func main() {
+	models.InitConfig()
 	e := routes.Router()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	models.InitConfig()
 	go controllers.TelegramMessagesHandler()
 	repositories.InitSkype()
+	go controllers.InitFb()
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

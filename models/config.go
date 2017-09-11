@@ -16,6 +16,9 @@ type Config struct {
 	TelegramToken       string `json:"telegram_token"`
 	SkypePassword       string `json:"skype_pass"`
 	SkypeAppID          string `json:"skype_id"`
+	FbPageToken         string `json:"fb_page_token"`
+	FbAppSecret         string `json:"fb_app_secret"`
+	FbVerifyToken       string `json:"fb_verify_token"`
 }
 
 func InitConfig() {
