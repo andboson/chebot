@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"github.com/andboson/chebot/models"
-	"github.com/maciekmm/messenger-platform-go-sdk"
 	"fmt"
+	"github.com/andboson/chebot/models"
 	"github.com/labstack/gommon/log"
+	"github.com/maciekmm/messenger-platform-go-sdk"
+	"github.com/maciekmm/messenger-platform-go-sdk/template"
 	"net/http"
 )
 
@@ -39,6 +40,27 @@ func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg mess
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	FbMess.SendAction(messenger.Recipient{ID: opts.Sender.ID}, messenger.SenderActionTypingOn)
+	btns := template.ButtonTemplate{
+		Text: "Выберите кинотеатр",
+		Buttons: []template.Button{
+			{
+				Title:   "Любава",
+				Type:    "postback",
+				Payload: "lyubava",
+			},			{
+				Title:   "Днепроплаза",
+				Type:    "postback",
+				Payload: "plaza",
+			},
+		},
+	}
+
+	mq := messenger.MessageQuery{}
+	mq.Template(btns)
+	mq.RecipientID( opts.Sender.ID)
+	FbMess.SendMessage(mq)
 	fmt.Printf("%+v", resp)
 	log.Printf("[fb] %#v", event)
 }
