@@ -5,6 +5,7 @@ import (
 	"github.com/maciekmm/messenger-platform-go-sdk"
 	"fmt"
 	"github.com/labstack/gommon/log"
+	"net/http"
 )
 
 var FbMess *messenger.Messenger
@@ -22,6 +23,10 @@ func InitFb() {
 		AccessToken: models.Conf.FbPageToken,
 	}
 	FbMess.MessageReceived = MessageReceived
+	go func() {
+		http.HandleFunc("/facebook.hook", FbMess.Handler)
+		log.Fatal(http.ListenAndServe(":1324", nil))
+	}()
 }
 
 func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg messenger.ReceivedMessage) {
