@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	DEFAULT_CONTEXT_LIFETIME = 10
+	DEFAULT_CONTEXT_LIFETIME = 20
 	CONTEXT_KINO             = "kino"
 )
 
@@ -35,18 +35,18 @@ func ProcessMessage(proc Processer) {
 	uid := proc.GetUid()
 	ctx, _ := userContexts[uid]
 
-	log.Printf("[process] text: %s context:", text, ctx)
+	log.Printf("[process] text: %s context: %s", text, ctx)
 	text = strings.Replace(text, "CherkassyBot", "", -1)
 	text = strings.TrimSpace(text)
 
 	// help
-	if text == "/?" {
+	if text == "/?" || strings.ToLower(text) == "/help" {
 		proc.ShowHelp()
 		return
 	}
 
 	// Taxi
-	if strings.ToLower(text) == "taxi" {
+	if strings.ToLower(text) == "taxi" || strings.ToLower(text) == "/taxi" {
 		proc.ShowTaxiList()
 		return
 	}
@@ -56,14 +56,14 @@ func ProcessMessage(proc Processer) {
 		switch ctx {
 		case CONTEXT_KINO:
 			proc.ShowFilms(text)
-			setUserContext(uid, "")
+			setUserContext(uid, CONTEXT_KINO)
 		}
 
 		return
 	}
 
 	// catch commands if empty context
-	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "films") {
+	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "/kino") {
 		setUserContext(uid, CONTEXT_KINO)
 		proc.ShowKinoPlaces()
 	}

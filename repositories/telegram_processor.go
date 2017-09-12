@@ -41,16 +41,20 @@ func NewTelegramProcessor(update tgbotapi.Update) TelegramProcessor {
 		Update: update,
 	}
 
-	if s.Update.Message == nil {
-		id = update.CallbackQuery.From.ID
+	if update.CallbackQuery != nil {
+		id = s.Update.CallbackQuery.From.ID
 		chatId = s.Update.CallbackQuery.Message.Chat.ID
 		messageId = s.Update.CallbackQuery.Message.MessageID
 		text = s.Update.CallbackQuery.Data
-	} else {
-		id = update.CallbackQuery.From.ID
+	} else if s.Update.Message != nil {
+		id = s.Update.Message.From.ID
 		chatId = s.Update.Message.Chat.ID
 		messageId = s.Update.Message.MessageID
 		text = s.Update.Message.Text
+	} else {
+		log.Printf("[tlgrm] unable to init proc %#v", s.Update.Message)
+
+		return s
 	}
 
 	s.chatId = chatId
@@ -82,13 +86,13 @@ func (s TelegramProcessor) ShowKinoPlaces() {
 	msg.ReplyMarkup = &keyb
 	_, err := TeleBot.Send(msg)
 	if err != nil {
-		log.Printf("[skype] error messaging: %s", err)
+		log.Printf("[tlgrm] error messaging: %s", err)
 	}
 	TeleLastMsgID[s.Uid] = 0
 }
 
 func (s TelegramProcessor) ShowFilms(location string) {
-	msgId := processKinoRequest(s.text, s.chatId , s.Uid)
+	msgId := processKinoRequest(s.text, s.chatId, s.Uid)
 	TeleLastMsgID[s.Uid] = msgId
 }
 
