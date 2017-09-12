@@ -35,6 +35,26 @@ func InitFb() {
 func MessagePostback(event messenger.Event, opts messenger.MessageOpts, payload messenger.Postback) {
 	log.Printf("====---==== %+v----%+v ---- %+v", opts, event, payload)
 
+	tpl1 := template.GenericTemplate{
+		Title: "Выберите кинотеатр",
+		Subtitle: "2232323",
+		ImageURL: "https://cherkassy.multiplex.ua/Images/Upload/origin.%D0%92%D0%B0%D0%BB%D0%B5%D1%80%D1%96%D0%B0%D0%BD%20%D1%82%D0%B0%20%D0%BC%D1%96%D1%81%D1%82%D0%BE%20%D1%82%D0%B8%D1%81%D1%8F%D1%87%D1%96%20%D0%BF%D0%BB%D0%B0%D0%BD%D0%B5%D1%82%203%D0%94.jpg",
+	}
+	tpl2 := template.GenericTemplate{
+		Title: "Выберите 222",
+		Subtitle: "2232323 333",
+		ImageURL: "https://cherkassy.multiplex.ua/Images/Upload/origin.%D0%92%D0%B0%D0%BB%D0%B5%D1%80%D1%96%D0%B0%D0%BD%20%D1%82%D0%B0%20%D0%BC%D1%96%D1%81%D1%82%D0%BE%20%D1%82%D0%B8%D1%81%D1%8F%D1%87%D1%96%20%D0%BF%D0%BB%D0%B0%D0%BD%D0%B5%D1%82%203%D0%94.jpg",
+	}
+
+	mq := messenger.MessageQuery{}
+	mq.Template(tpl1)
+	mq.Template(tpl2)
+	mq.Text("jndtn")
+	mq.RecipientID(opts.Sender.ID)
+	resp, err2 := FbMess.SendMessage(mq)
+	log.Printf("[fb postback] %#v", resp, err2)
+
+
 }
 
 func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg messenger.ReceivedMessage) {
