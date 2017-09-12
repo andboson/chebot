@@ -1,21 +1,21 @@
 package repositories
 
 import (
-	"github.com/maciekmm/messenger-platform-go-sdk"
-	"time"
-	"strings"
+	"fmt"
 	"github.com/andboson/chebot/models"
 	"github.com/labstack/gommon/log"
+	"github.com/maciekmm/messenger-platform-go-sdk"
 	"github.com/maciekmm/messenger-platform-go-sdk/template"
+	"strings"
+	"time"
 )
 
 type FbProcesssor struct {
 	Messenger *messenger.Messenger
-	Opts messenger.MessageOpts
-	Payload messenger.Postback
-	Msg messenger.ReceivedMessage
+	Opts      messenger.MessageOpts
+	Payload   messenger.Postback
+	Msg       messenger.ReceivedMessage
 }
-
 
 func (s FbProcesssor) ShowHelp() {
 	helpText := "Доступные команды:  \r\n # " + strings.Join(models.CmdList, "\r\n # ")
@@ -23,7 +23,6 @@ func (s FbProcesssor) ShowHelp() {
 	if err != nil {
 		log.Printf("[fb] error messaging: %s", err)
 	}
-
 }
 
 func (s FbProcesssor) ShowKinoPlaces() {
@@ -58,36 +57,50 @@ func (s FbProcesssor) ShowKinoPlaces() {
 }
 
 func (s FbProcesssor) ShowFilms(location string) {
-	//sendFilmsReplyMessage(s.Message, location)
-	tpl1 := template.GenericTemplate{
-		Title: "Выберите кинотеатр",
-		Subtitle: "2232323",
-		ItemURL: "https://cherkassy.multiplex.ua",
-		ImageURL: "https://cherkassy.multiplex.ua/Images/Upload/origin.%D0%92%D0%B0%D0%BB%D0%B5%D1%80%D1%96%D0%B0%D0%BD%20%D1%82%D0%B0%20%D0%BC%D1%96%D1%81%D1%82%D0%BE%20%D1%82%D0%B8%D1%81%D1%8F%D1%87%D1%96%20%D0%BF%D0%BB%D0%B0%D0%BD%D0%B5%D1%82%203%D0%94.jpg",
+	name, ok := KinoNamesRu[location]
+	url, _ := KinoUrls[location]
+	if !ok {
+		s.Messenger.SendSimpleMessage(s.Opts.Sender.ID, "Не знаю такое место")
+		log.Printf("[fb] unknown location: %s", location)
+		return
 	}
-	tpl2 := template.GenericTemplate{
-		Title: "Выберите 222",
-		Subtitle: "2232323 333",
-		ItemURL: "https://cherkassy.multiplex.ua",
-		ImageURL: "https://cherkassy.multiplex.ua/Images/Upload/origin.%D0%92%D0%B0%D0%BB%D0%B5%D1%80%D1%96%D0%B0%D0%BD%20%D1%82%D0%B0%20%D0%BC%D1%96%D1%81%D1%82%D0%BE%20%D1%82%D0%B8%D1%81%D1%8F%D1%87%D1%96%20%D0%BF%D0%BB%D0%B0%D0%BD%D0%B5%D1%82%203%D0%94.jpg",
+	films := GetMovies(location)
+	name = fmt.Sprintf("[%s](%s)", name, url)
+	mq := messenger.MessageQuery{}
+	for _, film := range films {
+		filmTpl := template.GenericTemplate{
+			Title:    film.Title,
+			Subtitle: film.TimeBlock,
+			ItemURL:  URL_PREFIX + film.Link,
+			ImageURL: URL_PREFIX + film.Img,
+		}
+		mq.Template(filmTpl)
 	}
 
-	mq := messenger.MessageQuery{}
-	mq.Template(tpl1)
-	mq.Template(tpl2)
-	mq.Text("jndtn")
+	mq.Text("Фильмы в " + name)
 	mq.RecipientID(s.Opts.Sender.ID)
-	resp, err2 := s.Messenger.SendMessage(mq)
-	log.Printf("[fb postback] %#v", resp, err2)
+	_, err := s.Messenger.SendMessage(mq)
+	if err != nil {
+		log.Printf("[fb] error messaging films: %s", err)
+	}
 }
 
 func (s FbProcesssor) ShowTaxiList() {
+	taxiList := LoadTaxi()
+	text := fmt.Sprintf("Список такси: (%d)", len(taxiList))
+	for number, firm := range taxiList {
+		text += " \r\n " + number + " - " + firm
+	}
 
+	_, err := s.Messenger.SendSimpleMessage(s.Opts.Sender.ID, text)
+	if err != nil {
+		log.Printf("[fb] error messaging: %s", err)
+	}
 }
 
 func (s FbProcesssor) GetText() string {
 	var text string
-	text =  s.Msg.Text
+	text = s.Msg.Text
 
 	if s.Payload.Payload != "" {
 		text = s.Payload.Payload
@@ -100,5 +113,3 @@ func (s FbProcesssor) GetUid() string {
 
 	return s.Opts.Sender.ID
 }
-
-

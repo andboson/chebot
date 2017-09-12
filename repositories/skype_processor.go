@@ -45,7 +45,6 @@ func (s SkypeProcessor) ShowKinoPlaces() {
 
 func (s SkypeProcessor) ShowFilms(location string) {
 	sendFilmsReplyMessage(s.Message, location)
-
 }
 
 func (s SkypeProcessor) ShowTaxiList() {
