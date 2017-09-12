@@ -15,8 +15,15 @@ func SkypeHook(c echo.Context) error {
 	if err != nil {
 		log.Printf("--- skype decode msg error!: %+v  >>%s", c.Request(), err)
 	}
+	var proc repositories.Processer
 
-	repositories.ProcessSkypeMessage(request)
+	proc = repositories.SkypeProcessor{
+		Message: &request,
+	}
+
+	repositories.ProcessMessage(proc)
+	repositories.ProcessSkypeTaxiManage(request)
+
 	resp := map[string]string{
 		"status": "success",
 	}

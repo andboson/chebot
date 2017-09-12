@@ -11,7 +11,35 @@ import (
 
 const TAXI_LIST_FILE = "taxi_numbers.txt"
 
-func ClearTaxi(activity *skypeapi.Activity, text string, platform string) error {
+func ProcessSkypeTaxiManage(message skypeapi.Activity) {
+	var text string
+	var err error
+	text = message.Text
+
+	log.Printf("[skype] text: %s :", text)
+	text = strings.Replace(text, "CherkassyBot", "", -1)
+	text = strings.TrimSpace(text)
+
+	if strings.Contains(text, "taxi add") {
+		err = AddTaxiToList(&message, text)
+		if err != nil {
+			log.Printf("[skype] taxi add err messaging %s", err)
+		}
+
+		return
+	}
+
+	if strings.Contains(text, "taxi clear") {
+		err = ClearTaxi(&message, text)
+		if err != nil {
+			log.Printf("[skype] taxi err clearing %s", err)
+		}
+
+		return
+	}
+}
+
+func ClearTaxi(activity *skypeapi.Activity, text string) error {
 	err := os.Remove(TAXI_LIST_FILE)
 	if err == nil {
 		skypeapi.SendReplyMessage(activity, "Done!", SkypeToken.AccessToken)
@@ -20,21 +48,21 @@ func ClearTaxi(activity *skypeapi.Activity, text string, platform string) error 
 	return err
 }
 
-func AddTaxiToList(activity *skypeapi.Activity, text string, platform string) error {
+func AddTaxiToList(activity *skypeapi.Activity, text string) error {
 	var err error
 	rawTaxi := strings.Trim(text, "taxi add")
 	taxiArr := strings.Split(rawTaxi, "=")
 	if len(taxiArr) == 2 {
 		err = AddTaxi(strings.TrimSpace(taxiArr[0]), strings.TrimSpace(taxiArr[1]))
 		if err == nil {
-			err = SendTaxiList(activity, "Обновленный список:", platform)
+			err = SendTaxiList(activity)
 		}
 	}
 
 	return err
 }
 
-func SendTaxiList(activity *skypeapi.Activity, text string, platform string) error {
+func SendTaxiList(activity *skypeapi.Activity) error {
 	taxiList := LoadTaxi()
 	var attchmts []skypeapi.Attachment
 	var err error

@@ -6,9 +6,7 @@ import (
 	"log"
 )
 
-const WEB_PLATFORM = "web-"
-
-func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform string) {
+func sendFilmsReplyMessage(activity *skypeapi.Activity, location string) {
 	name, ok := KinoNamesRu[location]
 	url, _ := KinoUrls[location]
 	if !ok {
@@ -19,21 +17,9 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location, platform strin
 	films := GetMovies(location)
 	name = fmt.Sprintf("[%s](%s)", name, url)
 
-	if platform == WEB_PLATFORM {
-		skypeapi.SendReplyMessage(activity, "Фильмы в "+name, SkypeToken.AccessToken)
-		for _, film := range films {
-			var filmText = " \n "
-			filmText += fmt.Sprintf("\r\n **%s** ", film.Title)
-			filmText += fmt.Sprintf("\r\n [%s](%s)", film.TimeBlock, URL_PREFIX+"/"+film.Link)
-			filmText += fmt.Sprintf("[:](%s)", URL_PREFIX+"/"+film.Img)
-			skypeapi.SendReplyMessage(activity, filmText, SkypeToken.AccessToken)
-			log.Printf("[debug skype] send web resp")
-		}
-	} else {
-		err := sendReplyMessageRich(activity, "Фильмы в "+name, SkypeToken.AccessToken, films)
-		if err != nil {
-			log.Printf("[skype] error films msg: %s", err)
-		}
+	err := sendReplyMessageRich(activity, "Фильмы в "+name, SkypeToken.AccessToken, films)
+	if err != nil {
+		log.Printf("[skype] error films msg: %s", err)
 	}
 
 }
@@ -82,9 +68,9 @@ func sendChoicePlaceReplyMessage(activity *skypeapi.Activity, message, authoriza
 
 func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationToken string, films []Film) error {
 	var attchmts []skypeapi.Attachment
- i := 0;
+	i := 0
 	for _, film := range films {
-i++;
+		i++
 		var att = skypeapi.Attachment{
 			ContentType: "application/vnd.microsoft.card.hero",
 			Content: skypeapi.AttachmentContent{
@@ -104,9 +90,9 @@ i++;
 		}
 
 		attchmts = append(attchmts, att)
-if i == 7{
-break
-}
+		if i == 7 {
+			break
+		}
 	}
 
 	responseActivity := &skypeapi.Activity{
@@ -120,7 +106,7 @@ break
 		ReplyToID:        activity.ID,
 	}
 	replyUrl := fmt.Sprintf("%v/v3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
-    //log.Printf("[skype] ---- %#v", films, replyUrl)
+	//log.Printf("[skype] ---- %#v", films, replyUrl)
 
 	return skypeapi.SendActivityRequest(responseActivity, replyUrl, authorizationToken)
 }

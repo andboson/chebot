@@ -21,7 +21,7 @@ func GetMovies(c echo.Context) error {
 
 	token := c.Request().Header.Get("x-secret-header")
 	if token != models.Conf.IncomingGoogleToken {
-		log.Printf("[---] tiken error", token)
+		log.Printf("[---] token error", token)
 		return c.JSON(http.StatusForbidden, map[string]string{
 			"message": "forbidden",
 		})

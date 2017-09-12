@@ -8,11 +8,6 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-const (
-	DEFAULT_CONTEXT_LIFETIME = 10
-	CONTEXT_KINO             = "kino"
-)
-
 var KinoNamesRu = map[string]string{
 	"lyubava": "Любаве",
 	"plaza":   "Днепроплазе",

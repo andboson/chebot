@@ -21,6 +21,8 @@ type Config struct {
 	FbVerifyToken       string `json:"fb_verify_token"`
 }
 
+var CmdList = []string{"1. kino  - Фильмы в кинотеатрах", "2. taxi - Список такси"}
+
 func InitConfig() {
 	var mu sync.Mutex
 	mu.Lock()
