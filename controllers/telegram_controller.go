@@ -23,7 +23,6 @@ func TelegramMessagesHandler() {
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
-
 	updates, err := bot.GetUpdatesChan(u)
 
 	if err != nil {
@@ -31,9 +30,7 @@ func TelegramMessagesHandler() {
 	}
 
 	for update := range updates {
-		userChan := repositories.GetOrNewUserChannel(update)
-		go func() {
-			userChan <- update
-		}()
+		var proc = repositories.NewTelegramProcessor(update)
+		repositories.ProcessMessage(proc)
 	}
 }

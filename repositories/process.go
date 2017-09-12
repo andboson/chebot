@@ -1,9 +1,9 @@
 package repositories
 
 import (
+	"github.com/labstack/gommon/log"
 	"strings"
 	"time"
-	"github.com/labstack/gommon/log"
 )
 
 const (
@@ -30,7 +30,7 @@ type Processer interface {
 	GetUid() string
 }
 
-func ProcessMessage(proc Processer){
+func ProcessMessage(proc Processer) {
 	text := proc.GetText()
 	uid := proc.GetUid()
 	ctx, _ := userContexts[uid]
@@ -50,7 +50,6 @@ func ProcessMessage(proc Processer){
 		proc.ShowTaxiList()
 		return
 	}
-
 
 	// process text with context
 	if ctx != "" {

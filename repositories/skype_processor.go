@@ -1,11 +1,11 @@
 package repositories
 
 import (
+	"github.com/andboson/chebot/models"
 	"github.com/andboson/skypeapi"
 	"github.com/labstack/gommon/log"
-	"time"
-	"github.com/andboson/chebot/models"
 	"strings"
+	"time"
 )
 
 var SkypeToken skypeapi.TokenResponse
@@ -27,8 +27,8 @@ type SkypeProcessor struct {
 	Message *skypeapi.Activity
 }
 
-func (s SkypeProcessor) ShowHelp()  {
-	helpText := "Доступные команды:  \r\n " + strings.Join(models.CmdList, "\r\n")
+func (s SkypeProcessor) ShowHelp() {
+	helpText := "Доступные команды:  \r\n # " + strings.Join(models.CmdList, "\r\n # ")
 	err := skypeapi.SendReplyMessage(s.Message, helpText, SkypeToken.AccessToken)
 	if err != nil {
 		log.Printf("[skype] error messaging: %s", err)
@@ -36,19 +36,19 @@ func (s SkypeProcessor) ShowHelp()  {
 
 }
 
-func (s SkypeProcessor) ShowKinoPlaces()  {
+func (s SkypeProcessor) ShowKinoPlaces() {
 	err := sendChoicePlaceReplyMessage(s.Message, "Выберите  кинотеатр", SkypeToken.AccessToken)
 	if err != nil {
 		log.Printf("[skype] error messaging: %s", err)
 	}
 }
 
-func (s SkypeProcessor) ShowFilms(location string)  {
+func (s SkypeProcessor) ShowFilms(location string) {
 	sendFilmsReplyMessage(s.Message, location)
 
 }
 
-func (s SkypeProcessor) ShowTaxiList()  {
+func (s SkypeProcessor) ShowTaxiList() {
 	err := SendTaxiList(s.Message)
 	if err != nil {
 		log.Printf("[skype] taxi err messaging %s", err)

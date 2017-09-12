@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-func processKinoRequest(location string, ctx string, chatId int64, messageId, uid int) int {
+func processKinoRequest(location string, chatId int64, uid int) int {
 	var num int
 	var sentId int
 

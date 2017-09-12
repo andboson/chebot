@@ -5,7 +5,7 @@ import (
 	"gopkg.in/telegram-bot-api.v4"
 )
 
-func processTaxiRequest(ctx string, chatId int64, messageId, uid int) int {
+func processTaxiRequest(ctx string, chatId int64) int {
 	var sentId int
 	taxiList := LoadTaxi()
 

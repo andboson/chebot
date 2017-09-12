@@ -1,13 +1,12 @@
 package controllers
 
 import (
+	"github.com/andboson/chebot/repositories"
 	"github.com/andboson/skypeapi"
 	"github.com/labstack/echo"
 	"github.com/labstack/gommon/log"
 	"net/http"
-	"github.com/andboson/chebot/repositories"
 )
-
 
 func SkypeHook(c echo.Context) error {
 	var request skypeapi.Activity
@@ -21,7 +20,8 @@ func SkypeHook(c echo.Context) error {
 	}
 
 	repositories.ProcessMessage(proc)
-	if request.Text == "taxi add" || request.Text == "taxi clear"{
+
+	if request.Text == "taxi add" || request.Text == "taxi clear" {
 		repositories.ProcessSkypeTaxiManage(request)
 	}
 
