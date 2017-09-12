@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	"log"
 	"strings"
 	"time"
+	"github.com/labstack/gommon/log"
 )
 
 const (
@@ -35,7 +35,7 @@ func ProcessMessage(proc Processer){
 	uid := proc.GetUid()
 	ctx, _ := userContexts[uid]
 
-	log.Printf("[skype] text: %s context:", text, ctx)
+	log.Printf("[process] text: %s context:", text, ctx)
 	text = strings.Replace(text, "CherkassyBot", "", -1)
 	text = strings.TrimSpace(text)
 

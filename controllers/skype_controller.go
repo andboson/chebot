@@ -16,13 +16,14 @@ func SkypeHook(c echo.Context) error {
 		log.Printf("--- skype decode msg error!: %+v  >>%s", c.Request(), err)
 	}
 	var proc repositories.Processer
-
 	proc = repositories.SkypeProcessor{
 		Message: &request,
 	}
 
 	repositories.ProcessMessage(proc)
-	repositories.ProcessSkypeTaxiManage(request)
+	if request.Text == "taxi add" || request.Text == "taxi clear"{
+		repositories.ProcessSkypeTaxiManage(request)
+	}
 
 	resp := map[string]string{
 		"status": "success",
