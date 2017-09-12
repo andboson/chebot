@@ -30,7 +30,11 @@ func TelegramMessagesHandler() {
 	}
 
 	for update := range updates {
-		var proc = repositories.NewTelegramProcessor(update)
-		repositories.ProcessMessage(proc)
+		go UpdateTelegram(update)
 	}
+}
+
+func UpdateTelegram(update tgbotapi.Update) {
+	var proc = repositories.NewTelegramProcessor(update)
+	repositories.ProcessMessage(proc)
 }
