@@ -56,13 +56,11 @@ func (s SkypeProcessor) ShowTaxiList()  {
 }
 
 func (s SkypeProcessor) GetText() string {
-	var txt string
 
-	return txt
+	return s.Message.Text
 }
 
 func (s SkypeProcessor) GetUid() string {
-	var txt string
 
-	return txt
+	return s.Message.From.ID
 }
