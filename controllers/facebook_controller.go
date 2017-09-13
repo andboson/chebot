@@ -44,6 +44,8 @@ func MessagePostback(event messenger.Event, opts messenger.MessageOpts, payload 
 func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg messenger.ReceivedMessage) {
 //	profile, err := FbMess.GetProfile(opts.Sender.ID)
 
+    log.Printf("====---==== %+v----%+v ---- %+v", opts, event, msg)
+
 	var proc = repositories.FbProcesssor{}
 	proc.Messenger = fbmess
 	proc.Msg = msg

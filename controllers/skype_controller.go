@@ -21,9 +21,9 @@ func SkypeHook(c echo.Context) error {
 
 	repositories.ProcessMessage(proc)
 
-	if request.Text == "taxi add" || request.Text == "taxi clear" {
+//	if request.Text == "taxi add" || request.Text == "taxi clear" || request.Text == "beer" {
 		repositories.ProcessSkypeTaxiManage(request)
-	}
+//	}
 
 	resp := map[string]string{
 		"status": "success",

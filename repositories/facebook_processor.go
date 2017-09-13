@@ -67,7 +67,7 @@ func (s FbProcesssor) ShowFilms(location string) {
 	films := GetMovies(location)
 	name = fmt.Sprintf("[%s](%s)", name, url)
 	mq := messenger.MessageQuery{}
-	for _, film := range films {
+	for idx, film := range films {
 		filmTpl := template.GenericTemplate{
 			Title:    film.Title,
 			Subtitle: film.TimeBlock,
@@ -75,6 +75,9 @@ func (s FbProcesssor) ShowFilms(location string) {
 			ImageURL: URL_PREFIX + film.Img,
 		}
 		mq.Template(filmTpl)
+	    if idx == 8 {
+break
+}
 	}
 
 	mq.Text("Фильмы в " + name)

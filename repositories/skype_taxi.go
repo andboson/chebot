@@ -29,6 +29,11 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) {
 		return
 	}
 
+
+if strings.Contains(text, "beer") || strings.Contains(text, "Shvets") {
+	skypeapi.SendReplyMessage(&message, "(beer)", SkypeToken.AccessToken)
+}
+
 	if strings.Contains(text, "taxi clear") {
 		err = ClearTaxi(&message, text)
 		if err != nil {
