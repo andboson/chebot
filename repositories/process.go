@@ -30,25 +30,26 @@ type Processer interface {
 	GetUid() string
 }
 
-func ProcessMessage(proc Processer) {
+func ProcessMessage(proc Processer) bool {
 	text := proc.GetText()
 	uid := proc.GetUid()
 	ctx, _ := userContexts[uid]
 
 	log.Printf("[process] text: %s context: %s", text, ctx)
 	text = strings.Replace(text, "CherkassyBot", "", -1)
+	text = strings.Replace(text, "CherkasyBot", "", -1)
 	text = strings.TrimSpace(text)
 
 	// help
-	if text == "/?" || strings.ToLower(text) == "/help" {
+	if text == "/?" || strings.ToLower(text) == "/help" || strings.ToLower(text) == "help" {
 		proc.ShowHelp()
-		return
+		return true
 	}
 
 	// Taxi
 	if strings.ToLower(text) == "taxi" || strings.ToLower(text) == "/taxi" {
 		proc.ShowTaxiList()
-		return
+		return true
 	}
 
 	// process text with context
@@ -59,14 +60,17 @@ func ProcessMessage(proc Processer) {
 			setUserContext(uid, CONTEXT_KINO)
 		}
 
-		return
+		return true
 	}
 
 	// catch commands if empty context
 	if ctx == "" && (strings.ToLower(text) == "kino" || strings.ToLower(text) == "/kino") {
 		setUserContext(uid, CONTEXT_KINO)
 		proc.ShowKinoPlaces()
+		return true
 	}
+
+	return false
 }
 
 // set context
