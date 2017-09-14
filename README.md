@@ -19,3 +19,8 @@ For skype, telegram, api.ai, facebook bots exercises
 
 * Echo framework
 * glide vendoring tool
+
+### video
+
+[![chebot](https://i.ytimg.com/vi/QnbLH4ERlik/hqdefault.jpg)](https://youtu.be/QnbLH4ERlik "chebot")
+
