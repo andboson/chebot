@@ -22,5 +22,6 @@ For skype, telegram, api.ai, facebook bots exercises
 
 ### video
 
-[![chebot](https://i.ytimg.com/vi/QnbLH4ERlik/hqdefault.jpg)](https://youtu.be/QnbLH4ERlik "chebot")
+[![chebot](https://i.ytimg.com/vi/QnbLH4ERlik/hqdefault.jpg)](https://www.youtube.com/watch?v=QnbLH4ERlik)
+
 
