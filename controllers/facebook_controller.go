@@ -45,5 +45,8 @@ func MessageReceived(event messenger.Event, opts messenger.MessageOpts, msg mess
 	proc.Msg = msg
 	proc.Opts = opts
 
-	repositories.ProcessMessage(proc)
+	result := repositories.ProcessMessage(proc)
+	if !result {
+		proc.NoResults()
+	}
 }

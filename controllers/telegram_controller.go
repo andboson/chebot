@@ -36,5 +36,8 @@ func TelegramMessagesHandler() {
 
 func UpdateTelegram(update tgbotapi.Update) {
 	var proc = repositories.NewTelegramProcessor(update)
-	repositories.ProcessMessage(proc)
+	result := repositories.ProcessMessage(proc)
+	if !result {
+		proc.NoResults()
+	}
 }
