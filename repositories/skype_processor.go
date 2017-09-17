@@ -27,6 +27,15 @@ type SkypeProcessor struct {
 	Message *skypeapi.Activity
 }
 
+func (s SkypeProcessor) NoResults() {
+	helpText := no_understand
+	err := skypeapi.SendReplyMessage(s.Message, helpText, SkypeToken.AccessToken)
+	if err != nil {
+		log.Printf("[skype] error messaging: %s", err)
+	}
+
+}
+
 func (s SkypeProcessor) ShowHelp() {
 	helpText := "Доступные команды:  \r\n # " + strings.Join(models.CmdList, "\r\n # ")
 	err := skypeapi.SendReplyMessage(s.Message, helpText, SkypeToken.AccessToken)

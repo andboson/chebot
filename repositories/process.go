@@ -26,6 +26,7 @@ type Processer interface {
 	ShowKinoPlaces()
 	ShowFilms(location string)
 	ShowTaxiList()
+	NoResults()
 	GetText() string
 	GetUid() string
 }

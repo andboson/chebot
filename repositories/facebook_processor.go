@@ -17,6 +17,16 @@ type FbProcesssor struct {
 	Msg       messenger.ReceivedMessage
 }
 
+
+
+func (s FbProcesssor) NoResults() {
+	helpText := no_understand
+	_, err := s.Messenger.SendSimpleMessage(s.Opts.Sender.ID, helpText)
+	if err != nil {
+		log.Printf("[fb] error messaging: %s", err)
+	}
+}
+
 func (s FbProcesssor) ShowHelp() {
 	helpText := "Доступные команды:  \r\n # " + strings.Join(models.CmdList, "\r\n # ")
 	_, err := s.Messenger.SendSimpleMessage(s.Opts.Sender.ID, helpText)

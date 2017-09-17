@@ -11,7 +11,7 @@ import (
 
 const TAXI_LIST_FILE = "taxi_numbers.txt"
 
-func ProcessSkypeTaxiManage(message skypeapi.Activity) {
+func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 	var text string
 	var err error
 	text = message.Text
@@ -26,11 +26,13 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) {
 			log.Printf("[skype] taxi add err messaging %s", err)
 		}
 
-		return
+		return true
 	}
 
 	if strings.Contains(text, "beer") || strings.Contains(text, "Shvets") {
 		skypeapi.SendReplyMessage(&message, "(beer)", SkypeToken.AccessToken)
+
+		return true
 	}
 
 	if strings.Contains(text, "taxi clear") {
@@ -39,8 +41,10 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) {
 			log.Printf("[skype] taxi err clearing %s", err)
 		}
 
-		return
+		return true
 	}
+
+	return false
 }
 
 func ClearTaxi(activity *skypeapi.Activity, text string) error {

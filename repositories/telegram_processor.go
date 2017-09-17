@@ -9,6 +9,8 @@ import (
 	"sync"
 )
 
+const no_understand = "Не понимаю :\\"
+
 var KinoNamesRu = map[string]string{
 	"lyubava": "Любаве",
 	"plaza":   "Днепроплазе",
@@ -63,6 +65,18 @@ func NewTelegramProcessor(update tgbotapi.Update) TelegramProcessor {
 	s.Uid = id
 
 	return s
+}
+
+
+func (s TelegramProcessor) NoResults() {
+	helpText := no_understand
+	msg := tgbotapi.NewMessage(s.chatId, helpText)
+	_, err := TeleBot.Send(msg)
+
+	if err != nil {
+		log.Printf("[tlgrm] error help messaging: %s", err)
+	}
+
 }
 
 func (s TelegramProcessor) ShowHelp() {

@@ -19,9 +19,14 @@ func SkypeHook(c echo.Context) error {
 		Message: &request,
 	}
 
-	result := repositories.ProcessMessage(proc)
+	var result bool
+	result = repositories.ProcessMessage(proc)
 	if !result {
 		repositories.ProcessSkypeTaxiManage(request)
+	}
+
+	if !result {
+		proc.NoResults()
 	}
 
 	resp := map[string]string{
