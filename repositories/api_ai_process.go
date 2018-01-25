@@ -96,7 +96,13 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 	}
 
 	var items []models.CouruselItems
+	var uniq = map[string]string{}
 	for _, film := range films {
+		if _, ok := uniq[film.Title]; ok {
+			continue
+		} else {
+			uniq[film.Title] = film.Title
+		}
 		var item = models.CouruselItems{
 			Title:       film.Title,
 			Description: film.TimeBlock,

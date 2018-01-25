@@ -11,7 +11,12 @@ const ConfigFile = "config.json"
 
 var Conf *Config
 
+type Configer interface {
+	LoadConfig()
+}
+
 type Config struct {
+	Configer
 	IncomingGoogleToken string `json:"incoming_google_token"`
 	TelegramToken       string `json:"telegram_token"`
 	SkypePassword       string `json:"skype_pass"`
