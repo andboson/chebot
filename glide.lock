@@ -1,5 +1,5 @@
-hash: d779a5b72e02f9c285747319c3b1a94e63033866daf755f13f4ba2ecec21174f
-updated: 2017-09-10T23:29:25.560507967+03:00
+hash: 3c518dde6808585daca41e14cc6c09a0dced09faef5f59c467398f72fd332440
+updated: 2018-01-27T17:48:01.345819405+02:00
 imports:
 - name: github.com/andboson/skypeapi
   version: 38136872c20d562a3965883c0b6d3913015b3618
@@ -9,6 +9,8 @@ imports:
   version: 1c31af6f6c1a7b101ed05aacc7d8a738b43ae86e
 - name: github.com/dgrijalva/jwt-go
   version: a539ee1a749a2b895533f979515ac7e6e0f5b650
+- name: github.com/essentialkaos/translit
+  version: f5c7ae2e7f438a7f5e5f47811c2b7382f91927e4
 - name: github.com/labstack/echo
   version: 1e9845a414f5177986779ee21963df7d1e362e15
   subpackages:
@@ -22,6 +24,8 @@ imports:
   - random
 - name: github.com/maciekmm/messenger-platform-go-sdk
   version: 0cb6e825b6fb086b37ffee383ed3057f3a706d0c
+  subpackages:
+  - template
 - name: github.com/mattn/go-colorable
   version: 6df6d4d004b64986bbb0d1b25945f42b44787e90
 - name: github.com/mattn/go-isatty
@@ -31,7 +35,7 @@ imports:
 - name: github.com/PuerkitoBio/goquery
   version: 152b1a2c8f5d0340f658bb656032a39b94e52958
 - name: github.com/stretchr/testify
-  version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:
   - assert
 - name: github.com/technoweenie/multipartstreamer
@@ -41,7 +45,7 @@ imports:
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: 9ba3862cf6a5452ae579de98f9364dd2e544844c
+  version: 365904b0f3154c6e11a9cf541c9803d1dca0445a
   subpackages:
   - acme
   - acme/autocert
@@ -51,14 +55,14 @@ imports:
   - html
   - html/atom
 - name: golang.org/x/sys
-  version: 7a6e5648d140666db5d920909e082ca00a87ba2c
+  version: a204229cd828a74741ee7b5da9bf4794497f85ed
   subpackages:
   - unix
 - name: gopkg.in/telegram-bot-api.v4
   version: 0a57807db79efce7f6719fbb2c0e0f83fda79aec
 testImports:
 - name: github.com/davecgh/go-spew
-  version: 2df174808ee097f90d259e432cc04442cf60be21
+  version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9
   subpackages:
   - spew
 - name: github.com/pmezard/go-difflib

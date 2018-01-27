@@ -12,3 +12,5 @@ import:
 - package: github.com/andboson/skypeapi
 - package: github.com/maciekmm/messenger-platform-go-sdk
   version: v4.5
+- package: github.com/essentialkaos/translit
+  version: ^2.0.0

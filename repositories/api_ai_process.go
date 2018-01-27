@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"github.com/essentialkaos/translit"
 )
 
 const (
@@ -108,7 +109,7 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 		simpleTitle := map[string]interface{}{
 			"simpleResponse": models.SimpleResponse{
 				DisplayText:  "",
-				TextToSpeech: "film " + film.Title,
+				TextToSpeech: "film " + translit.EncodeToISO9A(film.Title),
 			},
 		}
 		data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)
