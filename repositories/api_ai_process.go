@@ -97,12 +97,22 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 
 	var items []models.CouruselItems
 	var uniq = map[string]string{}
+
 	for _, film := range films {
 		if _, ok := uniq[film.Title]; ok {
 			continue
 		} else {
 			uniq[film.Title] = film.Title
 		}
+
+		simpleTitle := map[string]interface{}{
+			"simpleResponse": models.SimpleResponse{
+				DisplayText:  "",
+				TextToSpeech: "film " + film.Title,
+			},
+		}
+		data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)
+
 		var item = models.CouruselItems{
 			Title:       film.Title,
 			Description: film.TimeBlock,
@@ -127,6 +137,8 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 			},
 		},
 	}
+
+
 
 	return data
 }
