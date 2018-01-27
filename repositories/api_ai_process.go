@@ -107,7 +107,7 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 			uniq[film.Title] = film.Title
 		}
 
-		speechFilms += "film " + translit.EncodeToISO9A(film.Title) + "..\n"
+		speechFilms += "film " + translit.EncodeToISO9A(film.Title) + " \n  \n"
 
 		var item = models.CouruselItems{
 			Title:       film.Title,
