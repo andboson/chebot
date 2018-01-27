@@ -34,7 +34,13 @@ func GetMovies(c echo.Context) error {
 	resp.Source = "bot"
 
 	films := repositories.GetMovies(request.Result.Parameters.Cinema)
-	data := repositories.GetMovieListResponse(films, request.Result.Parameters.Cinema)
+	var isVoice = false
+	for _, ctx := range request.Result.Contexts {
+		if ctx.Name == "google_assistant_input_type_voice" {
+			isVoice = true
+		}
+	}
+	data := repositories.GetMovieListResponse(films, request.Result.Parameters.Cinema, isVoice)
 
 	resp.Data = data
 

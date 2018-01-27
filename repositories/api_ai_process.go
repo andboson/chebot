@@ -68,7 +68,7 @@ func GetMovies(cinema string) []Film {
 	return ex.FilmTds
 }
 
-func GetMovieListResponse(films []Film, cinema string) models.Data {
+func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data {
 	var empty string
 	if len(films) == 0 {
 		empty = " is empty"
@@ -124,13 +124,17 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 		items = append(items, item)
 	}
 
-	simpleTitle := map[string]interface{}{
-		"simpleResponse": models.SimpleResponse{
-			DisplayText:  "",
-			TextToSpeech: speechFilms,
-		},
+
+	if isVoice {
+		speechFilms +=  "<speak> I can pause <break time=\"3s\"/> </speak>"
+		simpleTitle := map[string]interface{}{
+			"simpleResponse": models.SimpleResponse{
+				DisplayText:  " ",
+				TextToSpeech: speechFilms,
+			},
+		}
+		data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)
 	}
-	data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)
 
 	data.Google.SystemIntent = models.SystemIntent{
 		Intent: "actions.intent.OPTION",
