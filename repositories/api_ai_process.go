@@ -98,6 +98,7 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 
 	var items []models.CouruselItems
 	var uniq = map[string]string{}
+	var speechFilms = ""
 
 	for _, film := range films {
 		if _, ok := uniq[film.Title]; ok {
@@ -106,13 +107,7 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 			uniq[film.Title] = film.Title
 		}
 
-		simpleTitle := map[string]interface{}{
-			"simpleResponse": models.SimpleResponse{
-				DisplayText:  "",
-				TextToSpeech: "film " + translit.EncodeToISO9A(film.Title),
-			},
-		}
-		data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)
+		speechFilms += "film " + translit.EncodeToISO9A(film.Title) + "..\n"
 
 		var item = models.CouruselItems{
 			Title:       film.Title,
@@ -128,6 +123,14 @@ func GetMovieListResponse(films []Film, cinema string) models.Data {
 		}
 		items = append(items, item)
 	}
+
+	simpleTitle := map[string]interface{}{
+		"simpleResponse": models.SimpleResponse{
+			DisplayText:  "",
+			TextToSpeech: speechFilms,
+		},
+	}
+	data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)
 
 	data.Google.SystemIntent = models.SystemIntent{
 		Intent: "actions.intent.OPTION",
