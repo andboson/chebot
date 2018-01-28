@@ -126,10 +126,9 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 
 
 	if isVoice {
-		speechFilms +=  "<speak> I can pause <break time=\"3s\"/> </speak>"
 		simpleTitle := map[string]interface{}{
 			"simpleResponse": models.SimpleResponse{
-				DisplayText:  " ",
+				DisplayText:  "<speak> I can pause <break time=\"3s\"/> </speak>",
 				TextToSpeech: speechFilms,
 			},
 		}
