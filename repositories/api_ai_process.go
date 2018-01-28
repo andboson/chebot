@@ -7,7 +7,8 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
-//	"github.com/essentialkaos/translit"
+	"github.com/essentialkaos/translit"
+	"strconv"
 )
 
 const (
@@ -100,14 +101,14 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 	var uniq = map[string]string{}
 	var speechFilms = "<speak>"
 
-	for _, film := range films {
+	for idx, film := range films {
 		if _, ok := uniq[film.Title]; ok {
 			continue
 		} else {
 			uniq[film.Title] = film.Title
 		}
 
-		speechFilms += "<p><s>film: " + film.Title + "</s></p><break time=\"1s\"/> \n"
+		speechFilms += "<p><s>film"+ strconv.Itoa(idx) +": " + translit.EncodeToISO9B(film.Title) + "</s></p><break time=\"1s\"/>"
 
 		var item = models.CouruselItems{
 			Title:       film.Title,
