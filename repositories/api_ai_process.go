@@ -128,8 +128,9 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 	if isVoice {
 		simpleTitle := map[string]interface{}{
 			"simpleResponse": models.SimpleResponse{
-				DisplayText:  "<speak> I can pause <break time=\"3s\"/> </speak>",
-				TextToSpeech: speechFilms,
+				DisplayText:  " ",
+				//Ssml: speechFilms,
+				Ssml: "<speak> I can pause <break time=\"3s\"/>  and end</speak>",
 			},
 		}
 		data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)

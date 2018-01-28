@@ -33,8 +33,9 @@ type Item struct {
 }
 
 type SimpleResponse struct {
-	TextToSpeech string `json:"textToSpeech"`
+	TextToSpeech string `json:"textToSpeech,omitempty"`
 	DisplayText  string `json:"displayText"`
+	Ssml         string `json:"ssml,omitempty"`
 }
 
 type BasicCard struct {
@@ -74,7 +75,6 @@ type OptionInfo struct {
 	Key      string   `json:"key"`
 	Synonyms []string `json:"synonyms"`
 }
-
 
 //{
 //"basicCard": models.BasicCard{
