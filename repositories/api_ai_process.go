@@ -98,7 +98,7 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 
 	var items []models.CouruselItems
 	var uniq = map[string]string{}
-	var speechFilms = ""
+	var speechFilms = "<speak>"
 
 	for _, film := range films {
 		if _, ok := uniq[film.Title]; ok {
@@ -107,7 +107,7 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 			uniq[film.Title] = film.Title
 		}
 
-		speechFilms += "film " + translit.EncodeToISO9A(film.Title) + " \n  \n"
+		speechFilms += "<p><s>film: " + translit.EncodeToISO9A(film.Title) + "</s></p><break time=\"1s\"/>"
 
 		var item = models.CouruselItems{
 			Title:       film.Title,
@@ -129,8 +129,7 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 		simpleTitle := map[string]interface{}{
 			"simpleResponse": models.SimpleResponse{
 				DisplayText:  " ",
-				//Ssml: speechFilms,
-				Ssml: "<speak> I can pause <break time=\"3s\"/>  and end</speak>",
+				Ssml: speechFilms + "</speak>",
 			},
 		}
 		data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)
