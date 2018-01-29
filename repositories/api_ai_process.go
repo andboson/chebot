@@ -110,7 +110,7 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 
 		SpeechAndStore(film.Title)
 		speechFilms += "<p><s>film"+ strconv.Itoa(idx) +": " +
-		"<audio src=\""+ models.Conf.VoiceMp3sFolder + film.Title + ".mp3" + "\">" +
+		"<audio src=\""+ models.Conf.Mp3HttpPath + film.Title + ".mp3" + "\">" +
 			translit.EncodeToISO9B(film.Title) + "</audio></s></p><break time=\"400ms\"/>"
 
 		var item = models.CouruselItems{
