@@ -6,5 +6,8 @@
   "skype_admin_id": "", // optional
   "fb_page_token": "",
   "fb_app_secret":"",
-  "fb_verify_token":""
+  "fb_verify_token":"",
+  "voicerss_api":"",
+  "mp3s":"",
+  "mp3s_http_path":""
 }
