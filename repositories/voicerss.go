@@ -10,6 +10,7 @@ import (
 )
 
 func init()  {
+	models.InitConfig()
 	ClearOldFiles()
 }
 
