@@ -31,6 +31,10 @@ func StoreFile(text string, content []byte) error{
 }
 
 func SpeechAndStore(text string) error {
+	if _, errF := os.Stat(models.Conf.VoiceMp3sFolder +"/" + text + ".mp3"); errF == nil {
+		return nil
+	}
+
 	content, err := GetSpeechFileContent(text)
 	if err != nil {
 		return err
