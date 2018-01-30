@@ -42,6 +42,7 @@ func GetMovies(cinema string) []Film {
 	url, ok := KinoUrls[cinema]
 	if !ok {
 		log.Printf("Cinema not found!")
+		return []Film{}
 	}
 
 	res, err := http.Get(url)
