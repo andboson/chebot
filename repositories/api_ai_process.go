@@ -177,7 +177,7 @@ func GetTaxiResponse() models.Data {
 	data.Google.ExpectedInputs = []models.ExpectedInput{
 		{
 			PossibleIntents: []models.PossibleIntent{
-				models.PossibleIntent{
+				{
 					Intent: "assistant.intent.action.TEXT",
 					//InputValueData: models.InputValueData{
 					//	Type: "type.googleapis.com/google.actions.v2.PermissionValueSpec",

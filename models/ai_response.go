@@ -25,12 +25,12 @@ type RichResponse struct {
 }
 
 type ExpectedInput struct {
-	PossibleIntents []PossibleIntent `json:"possible_intents"`
+	PossibleIntents []PossibleIntent `json:"possibleIntents"`
 }
 
 type PossibleIntent struct {
-	Intent string       `json:"intent"`
-	InputValueData InputValueData       `json:"inputValueData"`
+	Intent 		   string       `json:"intent"`
+	InputValueData InputValueData       `json:"inputValueData,omitempty"`
 }
 
 type InputValueData struct {
