@@ -14,6 +14,7 @@ type Data struct {
 		ExpectUserResponse bool         `json:"expectUserResponse"`
 		RichResponse       RichResponse `json:"richResponse"`
 		SystemIntent       SystemIntent `json:"systemIntent"`
+		ExpectedInputs     []ExpectedInput `json:"expected_inputs,omitempty"`
 	} `json:"google"`
 }
 
@@ -21,6 +22,14 @@ type RichResponse struct {
 	Items             []map[string]interface{} `json:"items"`
 	Suggestions       []Suggestion             `json:"suggestions"`
 	LinkOutSuggestion []interface{}            `json:"linkOutSuggestion"`
+}
+
+type ExpectedInput struct {
+	PossibleIntents []PossibleIntent `json:"possible_intents"`
+}
+
+type PossibleIntent struct {
+	Intent string       `json:"intent"`
 }
 
 type SuggestionResponse struct {
