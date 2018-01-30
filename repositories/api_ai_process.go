@@ -167,7 +167,12 @@ func GetTaxiResponse() models.Data {
 				},
 			},
 		},
-		}
+		Suggestions: []models.Suggestion{
+			{
+				Title: "help",
+			},
+		},
+	}
 
 		return  data
 }
