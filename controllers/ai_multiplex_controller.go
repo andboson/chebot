@@ -52,9 +52,13 @@ func GetAiResponse(c echo.Context) error {
 
 	switch context {
 	case repositories.CONTEXT_KINO:
+		log.Printf("--- 0", context)
+
 		films := repositories.GetMovies(request.Result.Parameters.Cinema)
 		data = repositories.GetMovieListResponse(films, request.Result.Parameters.Cinema, isVoice)
 	case repositories.CONTEXT_TAXI:
+		log.Printf("--- 1", context)
+
 		data = repositories.GetTaxiResponse()
 	}
 

@@ -71,8 +71,8 @@ type SystemIntent struct {
 }
 
 type CouruselData struct {
-	Type           string         `json:"@type"` //type.googleapis.com/google.actions.v2.OptionValueSpec
-	CarouselSelect CarouselSelect `json:"carouselSelect"`
+	Type           string         `json:"@type,omitempty"` //type.googleapis.com/google.actions.v2.OptionValueSpec
+	CarouselSelect CarouselSelect `json:"carouselSelect,omitempty"`
 }
 
 type CarouselSelect struct {
