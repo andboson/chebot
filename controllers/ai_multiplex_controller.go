@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func GetMovies(c echo.Context) error {
+func GetAiResponse(c echo.Context) error {
 	var request models.AiRequest
 	err := c.Bind(&request)
 	if err != nil {
@@ -33,14 +33,25 @@ func GetMovies(c echo.Context) error {
 	resp.Speech = "films"
 	resp.Source = "bot"
 
-	films := repositories.GetMovies(request.Result.Parameters.Cinema)
+	var data models.Data
+	var context = ""
 	var isVoice = false
 	for _, ctx := range request.Result.Contexts {
 		if ctx.Name == "google_assistant_input_type_voice" {
 			isVoice = true
 		}
+		if _, ok := repositories.AvailContexts[ctx.Name]; ok {
+			context = ctx.Name
+		}
 	}
-	data := repositories.GetMovieListResponse(films, request.Result.Parameters.Cinema, isVoice)
+
+	switch context {
+	case repositories.CONTEXT_KINO:
+		films := repositories.GetMovies(request.Result.Parameters.Cinema)
+		data = repositories.GetMovieListResponse(films, request.Result.Parameters.Cinema, isVoice)
+	case repositories.CONTEXT_TAXI:
+		///
+	}
 
 	resp.Data = data
 

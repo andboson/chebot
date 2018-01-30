@@ -9,16 +9,22 @@ import (
 const (
 	DEFAULT_CONTEXT_LIFETIME = 20
 	CONTEXT_KINO             = "kino"
+	CONTEXT_TAXI             = "taxi"
 )
 
 var userContextsUpdated map[string]chan bool
 var userContexts map[string]string
+var AvailContexts map[string]string
 
 func init() {
 	mu.Lock()
 	mu.Unlock()
 	userContexts = make(map[string]string)
 	userContextsUpdated = make(map[string]chan bool)
+	AvailContexts = map[string]string{
+		CONTEXT_KINO: CONTEXT_KINO,
+		CONTEXT_TAXI: CONTEXT_TAXI,
+	}
 }
 
 type Processer interface {
