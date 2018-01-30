@@ -140,7 +140,7 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 		data.Google.RichResponse.Items = append(data.Google.RichResponse.Items, simpleTitle)
 	}
 
-	data.Google.SystemIntent = models.SystemIntent{
+	data.Google.SystemIntent = &models.SystemIntent{
 		Intent: "actions.intent.OPTION",
 		Data: models.CouruselData{
 			Type: "type.googleapis.com/google.actions.v2.OptionValueSpec",
