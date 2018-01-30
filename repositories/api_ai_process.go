@@ -169,16 +169,5 @@ func GetTaxiResponse() models.Data {
 		},
 	}
 
-	data.Google.ExpectedInputs = []models.ExpectedInput{
-		{
-			[]models.PossibleIntent{
-				{
-					Intent:"actions.intent.TEXT",
-				},
-			},
-		},
-	}
-
-
 	return  data
 }

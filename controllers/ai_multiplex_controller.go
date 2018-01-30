@@ -48,7 +48,7 @@ func GetAiResponse(c echo.Context) error {
 		context = request.Result.ResolvedQuery
 	}
 
-	log.Printf("--- %+v  --context: %s", request, context)
+	log.Printf("--- %+v  --context: %s == %+v", request, context, data)
 
 	switch context {
 	case repositories.CONTEXT_KINO:
