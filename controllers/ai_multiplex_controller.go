@@ -27,8 +27,6 @@ func GetAiResponse(c echo.Context) error {
 		})
 	}
 
-	log.Printf("--- %+v", request)
-
 	var resp = new(models.AiResponse)
 	resp.Speech = "films"
 	resp.Source = "bot"
@@ -36,6 +34,7 @@ func GetAiResponse(c echo.Context) error {
 	var data models.Data
 	var context = ""
 	var isVoice = false
+	// get context form contexts
 	for _, ctx := range request.Result.Contexts {
 		if ctx.Name == "google_assistant_input_type_voice" {
 			isVoice = true
@@ -44,13 +43,19 @@ func GetAiResponse(c echo.Context) error {
 			context = ctx.Name
 		}
 	}
+	// get context from query
+	if _, ok := repositories.AvailContexts[request.Result.ResolvedQuery]; ok {
+		context = request.Result.ResolvedQuery
+	}
+
+	log.Printf("--- %+v  --context: %s", request, context)
 
 	switch context {
 	case repositories.CONTEXT_KINO:
 		films := repositories.GetMovies(request.Result.Parameters.Cinema)
 		data = repositories.GetMovieListResponse(films, request.Result.Parameters.Cinema, isVoice)
 	case repositories.CONTEXT_TAXI:
-		///
+		data = repositories.GetTaxiResponse()
 	}
 
 	resp.Data = data

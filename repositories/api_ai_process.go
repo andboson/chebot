@@ -154,3 +154,20 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 
 	return data
 }
+
+func GetTaxiResponse() models.Data {
+	data := models.Data{}
+	data.Google.ExpectUserResponse = false
+	data.Google.RichResponse = models.RichResponse{
+		Items: []map[string]interface{}{
+			{
+				"simpleResponse": models.SimpleResponse{
+					DisplayText:  "",
+					TextToSpeech: "taxi list",
+				},
+			},
+		},
+		}
+
+		return  data
+}
