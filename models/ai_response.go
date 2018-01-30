@@ -30,7 +30,7 @@ type ExpectedInput struct {
 
 type PossibleIntent struct {
 	Intent 		   string       `json:"intent"`
-	InputValueData InputValueData       `json:"inputValueData,omitempty"`
+	InputValueData InputValueData    `json:"inputValueData,omitempty"`
 }
 
 type InputValueData struct {
