@@ -30,6 +30,11 @@ type ExpectedInput struct {
 
 type PossibleIntent struct {
 	Intent string       `json:"intent"`
+	InputValueData InputValueData       `json:"inputValueData"`
+}
+
+type InputValueData struct {
+	Type           string         `json:"@type"`
 }
 
 type SuggestionResponse struct {
@@ -69,6 +74,7 @@ type CouruselData struct {
 	Type           string         `json:"@type"` //type.googleapis.com/google.actions.v2.OptionValueSpec
 	CarouselSelect CarouselSelect `json:"carouselSelect"`
 }
+
 type CarouselSelect struct {
 	Items []CouruselItems `json:"items"`
 }

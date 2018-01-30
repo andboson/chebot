@@ -178,7 +178,10 @@ func GetTaxiResponse() models.Data {
 		{
 			PossibleIntents: []models.PossibleIntent{
 				models.PossibleIntent{
-					Intent: "actions.intent.TEXT",
+					Intent: "assistant.intent.action.TEXT",
+					//InputValueData: models.InputValueData{
+					//	Type: "type.googleapis.com/google.actions.v2.PermissionValueSpec",
+					//},
 				},
 			},
 		},
