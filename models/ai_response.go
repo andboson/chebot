@@ -53,7 +53,7 @@ type Image struct {
 ////// coursel
 type SystemIntent struct {
 	Intent string       `json:"intent"` //actions.intent.OPTION
-	Data   CouruselData `json:"data"`
+	Data   CouruselData `json:"data,omitempty"`
 }
 
 type CouruselData struct {

@@ -174,5 +174,10 @@ func GetTaxiResponse() models.Data {
 		},
 	}
 
-		return  data
+	data.Google.SystemIntent = models.SystemIntent{
+		Intent: "actions.intent.TEXT",
+	}
+
+
+	return  data
 }
