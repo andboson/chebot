@@ -41,7 +41,7 @@ type Film struct {
 func GetMovies(cinema string) []Film {
 	url, ok := KinoUrls[cinema]
 	if !ok {
-		log.Fatal("Cinema not found!")
+		log.Printf("Cinema not found!")
 	}
 
 	res, err := http.Get(url)
