@@ -13,7 +13,7 @@ type Data struct {
 	Google struct {
 		ExpectUserResponse bool         `json:"expectUserResponse"`
 		RichResponse       RichResponse `json:"richResponse"`
-		SystemIntent       SystemIntent `json:"systemIntent"`
+		SystemIntent       SystemIntent `json:"systemIntent,omitempty"`
 		ExpectedInputs     []ExpectedInput `json:"expectedInputs,omitempty"`
 	} `json:"google"`
 }
