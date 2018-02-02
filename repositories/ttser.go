@@ -7,6 +7,10 @@ import (
 	"io/ioutil"
 	"os"
 	"time"
+	"fmt"
+	"os/exec"
+	"crypto/md5"
+	"log"
 )
 
 func init()  {
@@ -47,4 +51,19 @@ func ClearOldFiles()  {
 	os.RemoveAll(models.Conf.VoiceMp3sFolder +"/*")
 
 	time.AfterFunc( 1 * 24 * time.Hour, ClearOldFiles)
+}
+
+func UseRHVoice(text string) string {
+	//setup env
+	exec.Command("bash","-c", " export $(dbus-launch | xargs)").Output()
+	//go
+	hash := md5.New()
+	name := hash.Sum([]byte(text))
+	cmd := fmt.Sprintf("echo \"%s\" | RHVoice-client -s Irina -v 1  -r 0.1  > %s/%s.wav", text, models.Conf.VoiceMp3sFolder, name)
+	_, err := exec.Command("bash","-c",cmd).Output()
+	if err != nil {
+		log.Printf("Failed to execute command: %s", cmd)
+	}
+
+	return string(name)
 }

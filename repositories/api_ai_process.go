@@ -109,9 +109,12 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 			uniq[film.Title] = film.Title
 		}
 
-		SpeechAndStore(film.Title)
+		//SpeechAndStore(film.Title)
+		name := UseRHVoice(film.Title)
+		speech := models.Conf.Mp3HttpPath + film.Title + ".mp3"
+		speech = models.Conf.Mp3HttpPath + name + ".mp3"
 		speechFilms += "<p><s>film"+ strconv.Itoa(idx) +": " +
-		"<audio src=\""+ models.Conf.Mp3HttpPath + film.Title + ".mp3" + "\">" +
+		"<audio src=\""+ speech + "\">" +
 			translit.EncodeToISO9B(film.Title) + "</audio></s></p><break time=\"400ms\"/>"
 
 		var item = models.CouruselItems{
