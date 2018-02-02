@@ -63,7 +63,7 @@ func UseRHVoice(text string) string {
 		log.Printf("Failed to execute command: %s err: %s", cmd, err)
 	}
 
-	cmd = fmt.Sprintf("lame -V %s/%s.wav %s/%s.mp3", models.Conf.VoiceMp3sFolder, name,models.Conf.VoiceMp3sFolder, name)
+	cmd = fmt.Sprintf("ffmpeg -i %s/%s.wav %s/%s.mp3", models.Conf.VoiceMp3sFolder, name,models.Conf.VoiceMp3sFolder, name)
 	_, err = exec.Command("bash","-c",cmd).Output()
 	if err != nil {
 		log.Printf("Failed to execute command encode: %s err: %s", cmd, err)
