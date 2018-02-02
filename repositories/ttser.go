@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"crypto/md5"
 	"log"
+	"encoding/hex"
 )
 
 func init()  {
@@ -57,8 +58,7 @@ func UseRHVoice(text string) string {
 	//setup env
 	exec.Command("bash","-c", " export $(dbus-launch | xargs)").Output()
 	//go
-	hash := md5.New()
-	name := hash.Sum([]byte(text))
+	name := GetMD5Hash(text)
 	cmd := fmt.Sprintf("echo \"%s\" | RHVoice-client -s Irina -v 1  -r 0.1  > %s/%s.wav", text, models.Conf.VoiceMp3sFolder, name)
 	_, err := exec.Command("bash","-c",cmd).Output()
 	if err != nil {
@@ -66,4 +66,10 @@ func UseRHVoice(text string) string {
 	}
 
 	return string(name)
+}
+
+func GetMD5Hash(text string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(text))
+	return hex.EncodeToString(hasher.Sum(nil))
 }

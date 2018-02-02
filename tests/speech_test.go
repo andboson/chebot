@@ -29,6 +29,9 @@ func TestSpeechFileCreate(t *testing.T) {
 
 
 func TestSpeechRhVoice(t *testing.T) {
+	name := repositories.GetMD5Hash("tes")
+	log.Printf("----- %s", name)
+
 	text := "привет всем, friends"
 	cmd := fmt.Sprintf("echo \"%s\" | RHVoice-test -p Irina", text)
 	out, err := exec.Command("bash","-c",cmd).Output()
