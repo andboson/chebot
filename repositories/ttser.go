@@ -55,15 +55,20 @@ func ClearOldFiles()  {
 }
 
 func UseRHVoice(text string) string {
-	//setup env
-	exec.Command("bash","-c", " export $(dbus-launch | xargs)").Output()
 	//go
 	name := GetMD5Hash(text)
-	cmd := fmt.Sprintf("echo \"%s\" | RHVoice-client -s Irina -v 1  -r 0.1  > %s/%s.wav", text, models.Conf.VoiceMp3sFolder, name)
+	cmd := fmt.Sprintf(" export $(dbus-launch | xargs) && echo \"%s\" | RHVoice-client -s Irina -v 1  -r 0.1  > %s/%s.wav", text, models.Conf.VoiceMp3sFolder, name)
 	_, err := exec.Command("bash","-c",cmd).Output()
 	if err != nil {
-		log.Printf("Failed to execute command: %s", cmd)
+		log.Printf("Failed to execute command: %s err: %s", cmd, err)
 	}
+
+	cmd = fmt.Sprintf("lame -V %s/%s.wav %s/%s.mp3", models.Conf.VoiceMp3sFolder, name,models.Conf.VoiceMp3sFolder, name)
+	_, err = exec.Command("bash","-c",cmd).Output()
+	if err != nil {
+		log.Printf("Failed to execute command encode: %s err: %s", cmd, err)
+	}
+
 
 	return string(name)
 }
