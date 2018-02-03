@@ -1,5 +1,5 @@
-hash: 3c518dde6808585daca41e14cc6c09a0dced09faef5f59c467398f72fd332440
-updated: 2018-01-27T17:48:01.345819405+02:00
+hash: 1a2c7ad32feadc49dbb06b7b506666ac1a2d655b95fcba75c3b31f7645b58273
+updated: 2018-02-03T14:50:25.931214012+02:00
 imports:
 - name: github.com/andboson/skypeapi
   version: 38136872c20d562a3965883c0b6d3913015b3618
@@ -11,6 +11,8 @@ imports:
   version: a539ee1a749a2b895533f979515ac7e6e0f5b650
 - name: github.com/essentialkaos/translit
   version: f5c7ae2e7f438a7f5e5f47811c2b7382f91927e4
+- name: github.com/kardianos/osext
+  version: ae77be60afb1dcacde03767a8c37337fad28ac14
 - name: github.com/labstack/echo
   version: 1e9845a414f5177986779ee21963df7d1e362e15
   subpackages:
@@ -45,7 +47,7 @@ imports:
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: 365904b0f3154c6e11a9cf541c9803d1dca0445a
+  version: 94eea52f7b742c7cbe0b03b22f0c4c8631ece122
   subpackages:
   - acme
   - acme/autocert
@@ -55,7 +57,7 @@ imports:
   - html
   - html/atom
 - name: golang.org/x/sys
-  version: a204229cd828a74741ee7b5da9bf4794497f85ed
+  version: 8b4580aae2a0dd0c231a45d3ccb8434ff533b840
   subpackages:
   - unix
 - name: gopkg.in/telegram-bot-api.v4

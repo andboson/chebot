@@ -54,7 +54,7 @@ func GetAiResponse(c echo.Context) error {
 	case repositories.CONTEXT_KINO:
 		log.Printf("--- 0", context)
 
-		films := repositories.GetMovies(request.Result.Parameters.Cinema)
+		films := repositories.GetMovies(request.Result.Parameters.Cinema, false)
 		data = repositories.GetMovieListResponse(films, request.Result.Parameters.Cinema, isVoice)
 	case repositories.CONTEXT_TAXI:
 		log.Printf("--- 1", context)

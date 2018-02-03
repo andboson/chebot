@@ -74,7 +74,7 @@ func (s FbProcesssor) ShowFilms(location string) {
 		log.Printf("[fb] unknown location: %s", location)
 		return
 	}
-	films := GetMovies(location)
+	films := GetMovies(location, false)
 	name = fmt.Sprintf("[%s](%s)", name, url)
 	mq := messenger.MessageQuery{}
 	for idx, film := range films {

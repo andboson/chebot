@@ -14,7 +14,7 @@ func sendFilmsReplyMessage(activity *skypeapi.Activity, location string) {
 		log.Printf("unknown location: %s", location)
 		return
 	}
-	films := GetMovies(location)
+	films := GetMovies(location, false)
 	name = fmt.Sprintf("[%s](%s)", name, url)
 
 	err := sendReplyMessageRich(activity, "Фильмы в "+name, SkypeToken.AccessToken, films)

@@ -30,7 +30,7 @@ func processKinoRequest(location string, chatId int64, uid int) int {
 		TeleBot.Send(msgWhere)
 	}
 
-	films := GetMovies(location)
+	films := GetMovies(location, false)
 
 	butt := tgbotapi.NewInlineKeyboardRow()
 	for idx, _ := range films {

@@ -2,73 +2,11 @@ package repositories
 
 import (
 	"github.com/andboson/chebot/models"
-	"github.com/andrewstuart/goq"
-	"log"
-	"net/http"
-	"regexp"
-	"strings"
 	"github.com/essentialkaos/translit"
 	"strconv"
 )
 
-const (
-	LUBAVA_URL = "https://multiplex.ua/cinema/cherkasy/lyubava"
-	PLAZA_URL  = "https://multiplex.ua/cinema/cherkasy/dniproplaza"
-	URL_PREFIX = "https://multiplex.ua/"
-)
 
-var KinoUrls = map[string]string{
-	"lyubava": LUBAVA_URL,
-	"plaza":   PLAZA_URL,
-}
-
-var KinoNames = map[string]string{
-	"lyubava": "Lyubava ",
-	"plaza":   "Dniproplaza ",
-}
-
-type Films struct {
-	FilmTds []Film `goquery:"div.film"`
-}
-
-type Film struct {
-	Img       string `goquery:"div.poster,[style]"`
-	Link      string `goquery:"a,[href]"`
-	Title     string `goquery:".info a"`
-	TimeBlock string `goquery:".info .sessions,text"`
-}
-
-func GetMovies(cinema string) []Film {
-	url, ok := KinoUrls[cinema]
-	if !ok {
-		log.Printf("Cinema not found!")
-		return []Film{}
-	}
-
-	res, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer res.Body.Close()
-
-	var ex Films
-
-	err = goq.NewDecoder(res.Body).Decode(&ex)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	re := regexp.MustCompile(`\s+|\n+`)
-	for idx, flm := range ex.FilmTds {
-		img := strings.TrimRight(flm.Img, "')")
-		img = strings.TrimLeft(img, "background-image: url('")
-		times := re.ReplaceAllLiteralString(flm.TimeBlock, " ")
-		ex.FilmTds[idx].Img = img
-		ex.FilmTds[idx].TimeBlock = times
-	}
-
-	return ex.FilmTds
-}
 
 func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data {
 	var empty string

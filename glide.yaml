@@ -14,3 +14,4 @@ import:
   version: v4.5
 - package: github.com/essentialkaos/translit
   version: ^2.0.0
+- package: github.com/kardianos/osext
