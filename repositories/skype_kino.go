@@ -88,10 +88,6 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 				},
 			},
 		}
-		if i == 9 {
-			break
-		}
-
 		attchmts = append(attchmts, att)
 	}
 
