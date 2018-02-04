@@ -88,7 +88,7 @@ func sendReplyMessageRich(activity *skypeapi.Activity, message, authorizationTok
 				},
 			},
 		}
-		if i == 8 {
+		if i == 9 {
 			break
 		}
 
