@@ -82,12 +82,25 @@ func GetMovies(cinema string, force bool) []Film {
 		ex.FilmTds[idx].TimeBlock = times
 	}
 
-	saveFilmsCacheToFile(ex.FilmTds, cinema)
+	//filter doubles
+	var uniq = map[string]string{}
+	var result []Film
+	for _, flm := range ex.FilmTds  {
+		if _, ok := uniq[flm.Title]; ok {
+			continue
+		} else {
+			uniq[flm.Title] = flm.Title
+		}
+		result = append(result, flm)
+	}
+
+	// caching
+	saveFilmsCacheToFile(result, cinema)
 	time.AfterFunc( RECACHE_TIME_HOURS * time.Hour, func() {
 		GetMovies(cinema, force)
 	})
 
-	return ex.FilmTds
+	return result
 }
 
 func loadCacheFilmsFromFile(cinema string) ([]Film, error) {

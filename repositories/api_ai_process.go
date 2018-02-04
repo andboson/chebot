@@ -37,16 +37,9 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 	}
 
 	var items []models.CouruselItems
-	var uniq = map[string]string{}
 	var speechFilms = "<speak>"
 
 	for idx, film := range films {
-		if _, ok := uniq[film.Title]; ok {
-			continue
-		} else {
-			uniq[film.Title] = film.Title
-		}
-
 		//SpeechAndStore(film.Title)
 		name := UseRHVoice(film.Title)
 		speech := models.Conf.Mp3HttpPath + film.Title + ".mp3"
