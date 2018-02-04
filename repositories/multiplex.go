@@ -20,6 +20,7 @@ const (
 	URL_PREFIX = "https://multiplex.ua/"
 	RECACHE_TIME_HOURS = 6
 	films_cache_file = "films.cache"
+	MAX_ITEM_IN_RESPONSE = 10
 )
 
 var KinoUrls = map[string]string{
@@ -93,6 +94,8 @@ func GetMovies(cinema string, force bool) []Film {
 		}
 		result = append(result, flm)
 	}
+
+	result = result[0:MAX_ITEM_IN_RESPONSE]
 
 	// caching
 	saveFilmsCacheToFile(result, cinema)
