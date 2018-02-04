@@ -95,7 +95,11 @@ func GetMovies(cinema string, force bool) []Film {
 		result = append(result, flm)
 	}
 
-	result = result[0:MAX_ITEM_IN_RESPONSE]
+	end := MAX_ITEM_IN_RESPONSE
+	if len(result) < MAX_ITEM_IN_RESPONSE {
+		end = len(result)
+	}
+	result = result[0:end]
 
 	// caching
 	saveFilmsCacheToFile(result, cinema)
