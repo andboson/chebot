@@ -36,6 +36,10 @@ func GetAiResponse(c echo.Context) error {
 	var isVoice = false
 	// get context form contexts
 	for _, ctx := range request.Result.Contexts {
+		if ctx.Name == "actions_capability_screen_output" {
+			isVoice = false
+			break
+		}
 		if ctx.Name == "google_assistant_input_type_voice" {
 			isVoice = true
 		}
