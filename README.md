@@ -6,7 +6,7 @@ For skype, telegram, api.ai, facebook bots exercises
 * Facebook ( [CherkasyBot](http://fb.me/cherkasybot) )
 * BotFramework (Skype)  ( [cherkasy_bot](https://join.skype.com/bot/ce3552b9-2648-45da-8ec6-6ecab7064d1e) )
 * Telegram ( [@cherkass_bot](https://web.telegram.org/#/im?p=@cherkass_bot) )
-* Api.Ai
+* Api.Ai  ("personal home" bot, in testing mode)
 
 
 ### implemented commands:
@@ -19,6 +19,7 @@ For skype, telegram, api.ai, facebook bots exercises
 
 * Echo framework
 * glide vendoring tool
+* RHVoice tts engine (used for Google Home films list voice response in russian)
 
 ### video
 
