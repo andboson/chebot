@@ -4,6 +4,7 @@ import (
 	"github.com/andboson/chebot/models"
 	"github.com/essentialkaos/translit"
 	"strconv"
+"log"
 )
 
 
@@ -12,8 +13,10 @@ func GetMovieListResponse(films []Film, cinema string, isVoice bool) models.Data
 	var empty string
 	if len(films) == 0 {
 		empty = " is empty"
+log.Printf("--- empty films, voice: %s", isVoice)
 	}
 
+log.Printf("--- films: %+v   voice: %s", films, isVoice)
 	name := KinoNames[cinema]
 	data := models.Data{}
 	data.Google.ExpectUserResponse = false

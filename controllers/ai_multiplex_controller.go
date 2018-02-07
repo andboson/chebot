@@ -33,15 +33,11 @@ func GetAiResponse(c echo.Context) error {
 
 	var data models.Data
 	var context = ""
-	var isVoice = false
+	var isVoice = true
 	// get context form contexts
 	for _, ctx := range request.Result.Contexts {
 		if ctx.Name == "actions_capability_screen_output" {
 			isVoice = false
-			break
-		}
-		if ctx.Name == "google_assistant_input_type_voice" {
-			isVoice = true
 		}
 		if _, ok := repositories.AvailContexts[ctx.Name]; ok {
 			context = ctx.Name
