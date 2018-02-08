@@ -23,6 +23,12 @@ For skype, telegram, api.ai, facebook bots exercises
 
 ### video
 
+####  facebook
+
 [![chebot](https://i.ytimg.com/vi/QnbLH4ERlik/hqdefault.jpg)](https://www.youtube.com/watch?v=QnbLH4ERlik)
+
+#### google home
+[![chebot](https://i.ytimg.com/vi/DXrwb6W4N7Q/hqdefault.jpg)](https://www.youtube.com/watch?v=DXrwb6W4N7Q)
+
 
 
