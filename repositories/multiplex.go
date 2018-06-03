@@ -115,15 +115,24 @@ func loadCacheFilmsFromFile(cinema string) ([]Film, error) {
 	var result []Film
 
 	curDir, _ := osext.ExecutableFolder()
-	file, err := os.Open(filepath.Join(curDir, cinema + "." + films_cache_file))
+	fileName := filepath.Join(curDir, cinema + "." + films_cache_file)
+
+	//check expire, return empty if day differs from today
+	info, _ := os.Stat(fileName)
+	if info.ModTime().Day() != time.Now().Day() {
+		return result, err
+	}
+
+	file, err := os.Open(fileName)
 	if err == nil {
+		defer file.Close()
 		log.Printf("trying to load films cache from file...")
 		decoder := gob.NewDecoder(file)
 		err = decoder.Decode(&result)
 	} else {
 		log.Printf("trying to load films cache from file error: %s", err)
 	}
-	file.Close()
+
 
 	return result, err
 }
