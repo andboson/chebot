@@ -48,7 +48,7 @@ func ProcessMessage(proc Processer) bool {
 	text = strings.TrimSpace(text)
 
 	// help
-	if text == "/?" || strings.ToLower(text) == "/help" || strings.ToLower(text) == "help" {
+	if strings.Contains(text, "/?") || strings.Contains(strings.ToLower(text),"help")  || strings.ToLower(text) == "info" {
 		proc.ShowHelp()
 		return true
 	}

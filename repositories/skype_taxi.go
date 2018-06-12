@@ -29,9 +29,23 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 		return true
 	}
 
-	//berr
+	//beer
 	if strings.Contains(text, "beer") || strings.Contains(text, "Shvets") {
 		skypeapi.SendReplyMessage(&message, "(beer)", SkypeToken.AccessToken)
+
+		return true
+	}
+
+	//hi
+	if strings.Contains(text, "hello") || strings.Contains(text, "hi)") {
+		skypeapi.SendReplyMessage(&message, "(hi)", SkypeToken.AccessToken)
+
+		return true
+	}
+
+	//kill
+	if strings.Contains(text, "kill") || strings.Contains(text, "destroy)") {
+		skypeapi.SendReplyMessage(&message, "(kitty)", SkypeToken.AccessToken)
 
 		return true
 	}
@@ -49,7 +63,6 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 			intro = intro + fmt.Sprintf(" \n \n  %d. %s", key + 1, item)
 		}
 		skypeapi.SendReplyMessage(&message, intro, SkypeToken.AccessToken)
-		log.Printf(">> %+v", message)
 
 		return true
 	}
