@@ -36,8 +36,6 @@ func GetCalendarEventsList() []string {
 
 	t := time.Now().Format(time.RFC3339)
 	to := time.Now().Add(time.Hour * time.Duration((18 - time.Now().Hour()))).Format(time.RFC3339)
-	list, err := srv.CalendarList.List().Do()
-	log.Printf("list: %+v - %s", *list.Items[0], list.Items)
 
 	events, err := srv.Events.List(calendarId).
 		ShowDeleted(false).
@@ -47,11 +45,11 @@ func GetCalendarEventsList() []string {
 		TimeMax(to).
 		OrderBy("startTime").Do()
 	if err != nil {
-		log.Fatalf("Unable to retrieve next ten of the user's events: %v", err)
+		log.Printf("Unable to retrieve next ten of the user's events: %v", err, calendarId)
 	}
 	fmt.Println("Upcoming events:")
 	if len(events.Items) == 0 {
-		log.Println("No upcoming events found.")
+		log.Printf("No upcoming events found.")
 	} else {
 		for _, item := range events.Items {
 			start := item.Start.DateTime
