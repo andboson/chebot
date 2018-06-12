@@ -40,7 +40,7 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 	if text =="meeting list" || text == "meetings" {
 		list := GetCalendarEventsList()
 		SendList(&message, list, "Upcoming events")
-		skypeapi.SendReplyMessage(&message, "1111 \n 2121212 \r\n dsdasds", SkypeToken.AccessToken)
+		skypeapi.SendReplyMessage(&message, "* 1111 \n \n * 2121212 \r\n * dsdasds", SkypeToken.AccessToken)
 
 		log.Printf(">> %+v", message)
 
