@@ -21,3 +21,7 @@ import:
 - package: golang.org/x/oauth2
   subpackages:
   - google
+- package: cloud.google.com/go
+  version: ^0.23.0
+  subpackages:
+  - compute/metadata

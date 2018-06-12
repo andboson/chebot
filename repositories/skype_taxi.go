@@ -40,6 +40,7 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 	if strings.Contains(text, "meeting list") {
 		list := GetCalendarEventsList()
 		SendList(&message, list, "Upcoming events")
+		log.Printf(">> %+v", message)
 
 		return true
 	}

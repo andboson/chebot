@@ -1,6 +1,10 @@
-hash: 3a0fca93706d6ee2cf9c33f160ceb5cd7f5187755d83c79eebdf8bee305e8e60
-updated: 2018-06-12T13:35:59.067276266+03:00
+hash: 0e1796d4097d1ac0c54b2c786cbee87c7010235e0ba606e701d640c1e1e89e89
+updated: 2018-06-12T14:19:34.960492593+03:00
 imports:
+- name: cloud.google.com/go
+  version: 0fd7230b2a7505833d5f69b75cbd6c9582401479
+  subpackages:
+  - compute/metadata
 - name: github.com/andboson/skypeapi
   version: 38136872c20d562a3965883c0b6d3913015b3618
 - name: github.com/andrewstuart/goq
@@ -11,6 +15,10 @@ imports:
   version: a539ee1a749a2b895533f979515ac7e6e0f5b650
 - name: github.com/essentialkaos/translit
   version: f5c7ae2e7f438a7f5e5f47811c2b7382f91927e4
+- name: github.com/golang/protobuf
+  version: 05f48f4eaf0e05663b562bab533cdd472238ce29
+  subpackages:
+  - proto
 - name: github.com/kardianos/osext
   version: ae77be60afb1dcacde03767a8c37337fad28ac14
 - name: github.com/labstack/echo
@@ -54,12 +62,17 @@ imports:
 - name: golang.org/x/net
   version: f315505cf3349909cdf013ea56690da34e96a451
   subpackages:
+  - context
+  - context/ctxhttp
   - html
   - html/atom
 - name: golang.org/x/oauth2
   version: 1e0a3fa8ba9a5c9eb35c271780101fdaf1b205d7
   subpackages:
   - google
+  - internal
+  - jws
+  - jwt
 - name: golang.org/x/sys
   version: 8b4580aae2a0dd0c231a45d3ccb8434ff533b840
   subpackages:
@@ -68,6 +81,21 @@ imports:
   version: ef86ce4234efee96020bde00391d6a9cfae66561
   subpackages:
   - calendar/v3
+  - gensupport
+  - googleapi
+  - googleapi/internal/uritemplates
+- name: google.golang.org/appengine
+  version: b1f26356af11148e710935ed1ac8a7f5702c7612
+  subpackages:
+  - internal
+  - internal/app_identity
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/modules
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
 - name: gopkg.in/telegram-bot-api.v4
   version: 0a57807db79efce7f6719fbb2c0e0f83fda79aec
 testImports:
