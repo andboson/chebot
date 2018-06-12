@@ -46,6 +46,7 @@ func GetCalendarEventsList() []string {
 		OrderBy("startTime").Do()
 	if err != nil {
 		log.Printf("Unable to retrieve next ten of the user's events: %v", err, calendarId)
+		return result
 	}
 	fmt.Println("Upcoming events:")
 	if len(events.Items) == 0 {
