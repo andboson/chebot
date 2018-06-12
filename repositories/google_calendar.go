@@ -67,7 +67,7 @@ func GetCalendarEventsList() []string {
 			start = parsedStart.Format("15:04")
 			
 			if item.Summary !="" {
-				event := fmt.Sprintf("%s (%s - %s )  %s", item.Summary, start, end, item.Creator)
+				event := fmt.Sprintf("%s (%s - %s )  %s", item.Summary, start, end, item.Creator.DisplayName)
 				result = append(result, event)
 			}
 		}

@@ -182,12 +182,11 @@ func SendList(activity *skypeapi.Activity, list []string, title string) error {
 	attchmts = append(attchmts, att)
 	responseActivity := &skypeapi.Activity{
 		Type:             activity.Type,
-		AttachmentLayout: "carousel",
+		AttachmentLayout: "list",
 		From:             activity.Recipient,
 		Conversation:     activity.Conversation,
 		Recipient:        activity.From,
 		InputHint:        "pick item",
-		Text:             title + fmt.Sprintf(" (%d)", len(list)),
 		Attachments:      attchmts,
 		ReplyToID:        activity.ID,
 	}
