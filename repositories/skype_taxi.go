@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"github.com/andboson/chebot/models"
 )
 
 const TAXI_LIST_FILE = "taxi_numbers.txt"
@@ -63,6 +64,9 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 		for key, item := range list  {
 			intro = intro + fmt.Sprintf(" \n \n  %d. %s", key + 1, item)
 		}
+
+		var calendarId =  models.Conf.CalendarId
+		intro += fmt.Sprintf(" \n \n [view calendar](https://calendar.google.com/calendar/b/1/embed?src=%s@group.calendar.google.com&ctz=Europe/Kiev)", calendarId)
 		skypeapi.SendReplyMessage(&message, intro, SkypeToken.AccessToken)
 
 		return true
