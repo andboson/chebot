@@ -38,6 +38,7 @@ func (s SkypeProcessor) NoResults() {
 
 func (s SkypeProcessor) ShowHelp() {
 	helpText := "Доступные команды:  \r\n # " + strings.Join(models.CmdList, "\r\n # ")
+	helpText += "   \n \n https://github.com/andboson/chebot contribute here"
 	err := skypeapi.SendReplyMessage(s.Message, helpText, SkypeToken.AccessToken)
 	if err != nil {
 		log.Printf("[skype] error messaging: %s", err)
