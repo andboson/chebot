@@ -29,8 +29,17 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 		return true
 	}
 
+	//berr
 	if strings.Contains(text, "beer") || strings.Contains(text, "Shvets") {
 		skypeapi.SendReplyMessage(&message, "(beer)", SkypeToken.AccessToken)
+
+		return true
+	}
+
+	//meetings
+	if strings.Contains(text, "meeting list") {
+		list := GetCalendarEventsList()
+		SendList(&message, list, "Upcoming events")
 
 		return true
 	}
@@ -142,6 +151,47 @@ func AddTaxi(number, firm string) error {
 	defer file.Close()
 	line := fmt.Sprintf("%s|%s\r\n", number, firm)
 	_, err = file.WriteString(line)
+
+	return err
+}
+
+
+func SendList(activity *skypeapi.Activity, list []string, title string) error {
+	var attchmts []skypeapi.Attachment
+	var err error
+
+	var btns []skypeapi.CardAction
+	for _, value := range list {
+		btn := skypeapi.CardAction{
+			Title: value,
+			Type:  "imBack",
+			Value: value,
+		}
+
+		btns = append(btns, btn)
+	}
+
+	var att = skypeapi.Attachment{
+		ContentType: "application/vnd.microsoft.card.hero",
+		Content: skypeapi.AttachmentContent{
+			Title:   title + fmt.Sprintf(" (%d)", len(list)),
+			Buttons: btns,
+		},
+	}
+	attchmts = append(attchmts, att)
+	responseActivity := &skypeapi.Activity{
+		Type:             activity.Type,
+		AttachmentLayout: "carousel",
+		From:             activity.Recipient,
+		Conversation:     activity.Conversation,
+		Recipient:        activity.From,
+		InputHint:        "pick item",
+		Text:             title + fmt.Sprintf(" (%d)", len(list)),
+		Attachments:      attchmts,
+		ReplyToID:        activity.ID,
+	}
+	replyUrl := fmt.Sprintf("%v/v3/conversations/%v/activities/%v", activity.ServiceURL, activity.Conversation.ID, activity.ID)
+	err = skypeapi.SendActivityRequest(responseActivity, replyUrl, SkypeToken.AccessToken)
 
 	return err
 }

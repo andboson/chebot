@@ -22,7 +22,7 @@ func SkypeHook(c echo.Context) error {
 	var result bool
 	result = repositories.ProcessMessage(proc)
 	if !result {
-		repositories.ProcessSkypeTaxiManage(request)
+		result = repositories.ProcessSkypeTaxiManage(request)
 	}
 
 	if !result {

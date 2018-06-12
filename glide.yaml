@@ -15,3 +15,9 @@ import:
 - package: github.com/essentialkaos/translit
   version: ^2.0.0
 - package: github.com/kardianos/osext
+- package: google.golang.org/api
+  subpackages:
+  - calendar/v3
+- package: golang.org/x/oauth2
+  subpackages:
+  - google

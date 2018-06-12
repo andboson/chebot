@@ -1,5 +1,5 @@
-hash: 1a2c7ad32feadc49dbb06b7b506666ac1a2d655b95fcba75c3b31f7645b58273
-updated: 2018-02-03T14:50:25.931214012+02:00
+hash: 3a0fca93706d6ee2cf9c33f160ceb5cd7f5187755d83c79eebdf8bee305e8e60
+updated: 2018-06-12T13:35:59.067276266+03:00
 imports:
 - name: github.com/andboson/skypeapi
   version: 38136872c20d562a3965883c0b6d3913015b3618
@@ -56,10 +56,18 @@ imports:
   subpackages:
   - html
   - html/atom
+- name: golang.org/x/oauth2
+  version: 1e0a3fa8ba9a5c9eb35c271780101fdaf1b205d7
+  subpackages:
+  - google
 - name: golang.org/x/sys
   version: 8b4580aae2a0dd0c231a45d3ccb8434ff533b840
   subpackages:
   - unix
+- name: google.golang.org/api
+  version: ef86ce4234efee96020bde00391d6a9cfae66561
+  subpackages:
+  - calendar/v3
 - name: gopkg.in/telegram-bot-api.v4
   version: 0a57807db79efce7f6719fbb2c0e0f83fda79aec
 testImports:

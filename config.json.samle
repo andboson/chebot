@@ -9,5 +9,6 @@
   "fb_verify_token":"",
   "voicerss_api":"",
   "mp3s":"",
-  "mp3s_http_path":""
+  "mp3s_http_path":"",
+  "calendar_id"
 }

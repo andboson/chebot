@@ -27,6 +27,7 @@ type Config struct {
 	VoiceRssApiKey      string `json:"voicerss_api"`
 	VoiceMp3sFolder     string `json:"mp3s"`
 	Mp3HttpPath         string `json:"mp3s_http_path"`
+	CalendarId          string `json:"calendar_id"`
 }
 
 var CmdList = []string{"1. kino  - Фильмы в кинотеатрах", "2. taxi - Список такси"}
