@@ -37,7 +37,7 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 	}
 
 	//meetings
-	if text =="meeting list" || text == "meetings" {
+	if strings.Contains(text, "meetings") {
 		intro := "No events"
 		list := GetCalendarEventsList()
 		if len(list) > 0 {
