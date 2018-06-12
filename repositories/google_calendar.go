@@ -9,9 +9,10 @@ import (
 	"log"
 	"golang.org/x/net/context"
 	"github.com/andboson/chebot/models"
+	"strings"
 )
 
-func GetCalendarEventsList() []string {
+func GetCalendarEventsList(text string) []string {
 	var calendarId =  models.Conf.CalendarId
 	var result []string
 	b, err := ioutil.ReadFile("client_secret.json")
@@ -36,6 +37,10 @@ func GetCalendarEventsList() []string {
 
 	t := time.Now().Format(time.RFC3339)
 	to := time.Now().Add(time.Hour * time.Duration((18 - time.Now().Hour()))).Format(time.RFC3339)
+	if strings.Contains(text, "tomorrow") {
+		t = time.Now().Add(time.Hour * time.Duration((25 - time.Now().Hour()))).Add(6 * time.Hour).Format(time.RFC3339)
+		to = time.Now().Add(time.Hour * time.Duration((25 - time.Now().Hour()))).Add( 18 * time.Hour).Format(time.RFC3339)
+	}
 
 	events, err := srv.Events.List(calendarId).
 		ShowDeleted(false).

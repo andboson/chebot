@@ -51,13 +51,27 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 		return true
 	}
 
+
+	//weather
+	if strings.Contains(text, "weather") || strings.Contains(text, "pogoda)") {
+		var accuLink =  models.Conf.WeatherLink
+		text := fmt.Sprintf(" \n \n [accuweather cherkasy](%s)", accuLink)
+		skypeapi.SendReplyMessage(&message, text, SkypeToken.AccessToken)
+
+		return true
+	}
+
 	//meetings
 	if strings.Contains(text, "meetings") {
 		intro := "No events"
-		list := GetCalendarEventsList()
+		list := GetCalendarEventsList(text)
 		log.Printf(">>>> %+v ---- %+v", message ,message.Conversation)
 		if len(list) > 0 {
-			intro = "## Upcoming events:"
+			intro = "## Upcoming events"
+			if strings.Contains(text, "tomorrow") {
+				intro += " tomorrow"
+			}
+			intro += ":"
 			skypeapi.SendReplyMessage(&message, intro, SkypeToken.AccessToken)
 			intro = ""
 		}
