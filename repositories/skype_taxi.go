@@ -66,7 +66,7 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 		}
 
 		var calendarId =  models.Conf.CalendarId
-		intro += fmt.Sprintf(" \n \n [view calendar](https://calendar.google.com/calendar/b/1/embed?src=%s@group.calendar.google.com&ctz=Europe/Kiev)", calendarId)
+		intro += fmt.Sprintf(" \n \n [view calendar](https://calendar.google.com/calendar/b/1/embed?src=%s&ctz=Europe/Kiev)", calendarId)
 		skypeapi.SendReplyMessage(&message, intro, SkypeToken.AccessToken)
 
 		return true
