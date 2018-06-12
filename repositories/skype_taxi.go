@@ -41,10 +41,12 @@ func ProcessSkypeTaxiManage(message skypeapi.Activity) bool {
 		intro := "No events"
 		list := GetCalendarEventsList()
 		if len(list) > 0 {
-			intro = "### Upcoming events"
+			intro = "## Upcoming events:"
+			skypeapi.SendReplyMessage(&message, intro, SkypeToken.AccessToken)
+			intro = ""
 		}
-		for _, item := range list  {
-			intro += " * " + item
+		for key, item := range list  {
+			intro = intro + fmt.Sprintf(" %d. %s", key, item)
 		}
 		skypeapi.SendReplyMessage(&message, intro, SkypeToken.AccessToken)
 		log.Printf(">> %+v", message)
