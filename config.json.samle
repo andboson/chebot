@@ -11,5 +11,6 @@
   "mp3s":"",
   "mp3s_http_path":"",
   "calendar_id": "",
-  "accuweather_link": ""
+  "accuweather_link": "",
+  "api_key": ""
 }
