@@ -12,6 +12,7 @@ func Router() *echo.Echo {
 	e.OPTIONS("/skype.hook", func(c echo.Context) error{
 		return  c.NoContent(204)
 	})
+	e.POST("/web/message", controllers.WebMessage)
 
 	return e
 }
