@@ -29,6 +29,7 @@ type Config struct {
 	Mp3HttpPath         string `json:"mp3s_http_path"`
 	CalendarId          string `json:"calendar_id"`
 	WeatherLink         string `json:"accuweather_link"`
+	APIKey              string `json:"api_key"`
 }
 
 var CmdList = []string{"1. kino  - Фильмы в кинотеатрах", "2. taxi - Список такси"}
