@@ -1,6 +1,7 @@
 # chebot
 Cherkassy, UA 
-city bot. 
+
+City bot. 
 For skype, telegram, api.ai, facebook bots exercises
 
 ### platforms
